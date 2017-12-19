@@ -1,0 +1,20 @@
+name: LMGTFY
+author: Nikl
+main: me.nikl.lmgtfy.Main
+version: 1.0.0
+website: nikl.me
+
+commands:
+  lmgtfy:
+    description: let me google that for you
+    usage: /lmgtfy <search>
+    aliases: [lmg]
+
+permissions:
+  lmgtfy.*:
+    description: Gives all permissions
+    children:
+      lmgtfy.use: true
+  lmgtfy.use:
+    description: Allows to create lmgtfy links
+    default: true

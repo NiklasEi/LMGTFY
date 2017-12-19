@@ -36,7 +36,8 @@ public class Language {
     // player input
     public String CMD_MESSAGE_PRE_TEXT, CMD_MESSAGE_PRE_COLOR, CMD_MESSAGE_CLICK_TEXT
             , CMD_MESSAGE_CLICK_COLOR, CMD_MESSAGE_HOVER_TEXT, CMD_MESSAGE_HOVER_COLOR
-            , CMD_MESSAGE_AFTER_TEXT, CMD_MESSAGE_AFTER_COLOR;
+            , CMD_MESSAGE_AFTER_TEXT, CMD_MESSAGE_AFTER_COLOR, CMD_MESSAGE_CLICK_TEXT_2
+            , CMD_MESSAGE_CLICK_COLOR_2, CMD_MESSAGE_HOVER_TEXT_2, CMD_MESSAGE_HOVER_COLOR_2;
 
     // JSON prefix parts (click invite message)
     public String JSON_PREFIX_PRE_TEXT, JSON_PREFIX_PRE_COLOR, JSON_PREFIX_TEXT, JSON_PREFIX_COLOR
@@ -96,6 +97,11 @@ public class Language {
         this.CMD_MESSAGE_HOVER_COLOR = getString("linkMessage.hoverColor");
         this.CMD_MESSAGE_AFTER_TEXT = getString("linkMessage.afterText");
         this.CMD_MESSAGE_AFTER_COLOR = getString("linkMessage.afterColor");
+
+        this.CMD_MESSAGE_CLICK_TEXT_2 = getString("linkMessage.clickText2");
+        this.CMD_MESSAGE_CLICK_COLOR_2 = getString("linkMessage.clickColor2");
+        this.CMD_MESSAGE_HOVER_TEXT_2 = getString("linkMessage.hoverText2");
+        this.CMD_MESSAGE_HOVER_COLOR_2 = getString("linkMessage.hoverColor2");
     }
 
     /**

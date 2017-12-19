@@ -81,6 +81,10 @@ public class LmgtfyCmd implements CommandExecutor {
 
         boolean boldClick = true;
 
+        String secondClick = "{\"text\":\"" + lang.CMD_MESSAGE_CLICK_TEXT_2.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_CLICK_COLOR_2 + "\",\"bold\":" + boldClick + ",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url
+                + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"" + lang.CMD_MESSAGE_HOVER_TEXT_2.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_HOVER_COLOR_2 +"\"}}},";
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw "
                 + player.getName()
                 + " [{\"text\":\"" + lang.JSON_PREFIX_PRE_TEXT.replace("%link%", url) + "\",\"color\":\"" + lang.JSON_PREFIX_PRE_COLOR + "\"},{\"text\":\"" + lang.JSON_PREFIX_TEXT + "\",\"color\":\""
@@ -90,7 +94,8 @@ public class LmgtfyCmd implements CommandExecutor {
                 + lang.CMD_MESSAGE_CLICK_COLOR + "\",\"bold\":" + boldClick + ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/lmgtfy "
                 + clickCommand + " " + url
                 + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"" + lang.CMD_MESSAGE_HOVER_TEXT.replace("%link%", url) + "\",\"color\":\""
-                + lang.CMD_MESSAGE_HOVER_COLOR + "\"}}}, {\"text\":\"" + lang.CMD_MESSAGE_AFTER_TEXT.replace("%link%", url) + "\",\"color\":\"" + lang.CMD_MESSAGE_AFTER_COLOR + "\"}]");
+                + lang.CMD_MESSAGE_HOVER_COLOR + "\"}}}, " + secondClick +  " {\"text\":\"" + lang.CMD_MESSAGE_AFTER_TEXT.replace("%link%", url) + "\",\"color\":\"" + lang.CMD_MESSAGE_AFTER_COLOR + "\"}]");
+
 
         return true;
     }

@@ -41,6 +41,10 @@ linkMessage:
   clickColor: "blue"
   hoverText: "Click to send the link in chat"
   hoverColor: "gold"
+  clickText2: " (go to link)"
+  clickColor2: "blue"
+  hoverText2: "Click to open the link"
+  hoverColor2: "gold"
   afterText: ""
   afterColor: "blue"
 

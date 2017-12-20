@@ -17,7 +17,6 @@ public class Main extends JavaPlugin {
     private Language lang;
     private FileConfiguration config;
 
-
     @Override
     public void onEnable() {
         if (!reload()) {
@@ -41,7 +40,7 @@ public class Main extends JavaPlugin {
         // get gamebox language file
         this.lang = new Language(this);
 
-        this.getCommand("lmgtfy").setExecutor(new LmgtfyCmd(this));
+        this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this));
 
         return true;
     }

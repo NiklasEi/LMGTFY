@@ -1,5 +1,6 @@
 package me.nikl.lmgtfy;
 
+import me.nikl.lmgtfy.util.IsgdShortener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,13 +14,13 @@ import java.util.UUID;
 /**
  * Created by nikl on 19.12.17.
  */
-public class LmgtfyCmd implements CommandExecutor {
+public class LmgtfyCommand implements CommandExecutor {
 
     private Main plugin;
     private Language lang;
     private final String clickCommand = UUID.randomUUID().toString();
 
-    public LmgtfyCmd(Main plugin){
+    public LmgtfyCommand(Main plugin){
         this.plugin = plugin;
         this.lang = plugin.getLang();
     }
@@ -47,30 +48,20 @@ public class LmgtfyCmd implements CommandExecutor {
             return true;
         }
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(args[0]);
-        for(int i = 1; i < args.length; i++){
-            builder.append(" ");
-            builder.append(args[i]);
-        }
-        String query = builder.toString();
+        //Requires Java 8, which should be okay; https://bstats.org/global/bukkit#javaVersion
+        String query = String.join(" ", args);
 
         String url;
         try {
-            url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
-            return true;
+            url = IsgdShortener.shorten("https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8"));
+        } catch (Exception e) {
+            try {
+                url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
+            } catch (UnsupportedEncodingException uee) {
+                sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
+                return true;
+            }
         }
-
-        /*
-        try {
-            url = IsgdShortener.shorten(url);
-        } catch (IOException e) {
-            // silent!
-            // if shortening fails, just use the long link
-            //e.printStackTrace();
-        }*/
 
         if(!(sender instanceof Player)) {
             sender.sendMessage(lang.PREFIX + " " + url);

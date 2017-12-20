@@ -53,7 +53,7 @@ public class LmgtfyCommand implements CommandExecutor {
         String url;
         try {
             url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
-        } catch (UnsupportedEncodingException uee) {
+        } catch (UnsupportedEncodingException e) {
             sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
             return true;
         }

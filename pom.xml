@@ -10,9 +10,13 @@
     <packaging>jar</packaging>
     <description>Send lmgtfy links in the chat</description>
 
+    <build>
+        <finalName>LMGTFY-${project.version}</finalName>
+    </build>
+
     <repositories>
         <repository>
-            <id>bukkit-repo</id>
+            <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
@@ -24,8 +28,8 @@
     <dependencies>
         <!--Bukkit API-->
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <version>1.12-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

@@ -19,8 +19,7 @@ public class Main extends JavaPlugin {
 
 
     @Override
-    public void onEnable(){
-
+    public void onEnable() {
         if (!reload()) {
             getLogger().severe(" Problem while loading the plugin! Plugin was disabled!");
 

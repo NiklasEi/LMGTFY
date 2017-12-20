@@ -1,6 +1,5 @@
 package me.nikl.lmgtfy;
 
-import me.nikl.lmgtfy.util.IsgdShortener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -53,14 +52,10 @@ public class LmgtfyCommand implements CommandExecutor {
 
         String url;
         try {
-            url = IsgdShortener.shorten("https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8"));
-        } catch (Exception e) {
-            try {
-                url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
-                return true;
-            }
+            url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException uee) {
+            sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
+            return true;
         }
 
         if(!(sender instanceof Player)) {

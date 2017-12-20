@@ -4,7 +4,8 @@ import me.nikl.lmgtfy.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
@@ -25,6 +26,7 @@ public class FileUtil {
      * whether it is already present in the plugins language folder.
      * If not it is copied.
      */
+
     public static void copyDefaultLanguageFiles() {
         URL main = Main.class.getResource("Main.class");
 

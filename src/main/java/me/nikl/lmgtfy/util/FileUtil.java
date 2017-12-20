@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 
 /**
  * Created by nikl on 23.10.17.
@@ -35,7 +36,7 @@ public class FileUtil {
             Plugin gameBox = Bukkit.getPluginManager().getPlugin("LMGTFY");
             for (Enumeration list = jar.entries(); list.hasMoreElements(); ) {
                 JarEntry entry = (JarEntry) list.nextElement();
-                if (entry.getName().split(File.separator)[0].equals("language")) {
+                if (entry.getName().split(Pattern.quote(File.separator))[0].equals("language")) {
 
                     String[] pathParts = entry.getName().split(File.separator);
 

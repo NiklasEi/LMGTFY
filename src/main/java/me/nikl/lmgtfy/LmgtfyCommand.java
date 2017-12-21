@@ -16,13 +16,11 @@ import java.util.UUID;
  */
 public class LmgtfyCommand implements CommandExecutor {
 
-    private Main plugin;
     private Language lang;
     private final String clickCommand = UUID.randomUUID().toString();
     private Shortener shortener;
 
     public LmgtfyCommand(Main plugin){
-        this.plugin = plugin;
         this.lang = plugin.getLang();
 
         this.shortener = new Shortener(plugin, this);
@@ -66,6 +64,9 @@ public class LmgtfyCommand implements CommandExecutor {
             return true;
         }
 
+        // ToDo: I don't like the workaround with tellraw, but sadly bukkit has no other way without packages.
+        //       For Spigot one could use SpigotPlayer and send the JSON without a command.
+
         if(Main.useShortener) {
             shortener.shortenAsync(url, new Shortener.Callable<String>() {
                 // called async!
@@ -92,6 +93,13 @@ public class LmgtfyCommand implements CommandExecutor {
         return true;
     }
 
+    /**
+     * Creates a JSON string that is ready to be send to a player per 'tellraw'
+     *
+     * @param url link to send
+     * @param name player
+     * @return JSON string
+     */
     private String createJSON(String url, String name){
         boolean boldClick = true;
 

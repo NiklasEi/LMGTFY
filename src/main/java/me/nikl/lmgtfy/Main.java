@@ -50,12 +50,6 @@ public class Main extends JavaPlugin {
         return true;
     }
 
-    @Override
-    public void onDisable(){
-
-    }
-
-
     private boolean reloadConfiguration(){
 
         // save the default configuration file if the file does not exist
@@ -81,10 +75,5 @@ public class Main extends JavaPlugin {
     @Override
     public FileConfiguration getConfig() {
         return config;
-    }
-
-    public interface Callback<T> {
-        void success(T t);
-        void fail();
     }
 }

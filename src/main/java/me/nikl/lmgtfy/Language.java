@@ -11,10 +11,8 @@ import java.util.List;
 /**
  * Created by nikl on 24.10.17.
  *
- * Super class for all Language classes.
- * Holds the file configurations and some basic messages.
- *
- * Provides methods to load messages from the files.
+ * Cleaned up super Language class from GameBox...
+ * Hold messages and handle the language files.
  */
 public class Language {
 

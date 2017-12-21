@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 /**
  * Created by nikl on 19.12.17.
  *
+ * Send requests to a shortening service and catch the shortened link
  */
 public class Shortener {
     private LmgtfyCommand lmgtfyCommand;
@@ -23,7 +24,7 @@ public class Shortener {
     }
 
     public void shortenAsync(String link, Callable<String> callable){
-        new Lookup(plugin, link, callable).runTaskAsynchronously(plugin);
+        new Lookup(link, callable).runTaskAsynchronously(plugin);
     }
 
 
@@ -36,18 +37,17 @@ public class Shortener {
         private final static String REQ = "https://is.gd/create.php?format=simple&url=";
         private String link;
         private Callable<String> callable;
-        private Main plugin;
 
-        public Lookup(Main plugin, String link, Callable<String> callable){
+        public Lookup(String link, Callable<String> callable){
             this.link = link;
             this.callable = callable;
-            this.plugin = plugin;
         }
 
         @Override
         public void run() {
             try {
                 final String shortLink = shorten(link);
+                // since chat can be handled async there is no need to jump back on main
                 callable.success(shortLink);
             } catch (IOException e) {
                 callable.fail(link);

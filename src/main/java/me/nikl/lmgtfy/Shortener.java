@@ -55,12 +55,9 @@ public class Shortener {
         }
 
         private String shorten(String longUrl) throws IOException {
-            Bukkit.getLogger().info("got: " + longUrl);
             String isgdUrlLookup = REQ + URLEncoder.encode(longUrl, "UTF-8");
             BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(isgdUrlLookup).openStream()));
             String isgdUrl = reader.readLine();
-
-            Bukkit.getLogger().info("short: " + isgdUrl);
             return isgdUrl;
         }
     }

@@ -1,6 +1,5 @@
 package me.nikl.lmgtfy;
 
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.BufferedReader;
@@ -15,11 +14,9 @@ import java.net.URLEncoder;
  * Send requests to a shortening service and catch the shortened link
  */
 public class Shortener {
-    private LmgtfyCommand lmgtfyCommand;
     private Main plugin;
 
-    public Shortener(Main plugin, LmgtfyCommand lmgtfyCommand){
-        this.lmgtfyCommand = lmgtfyCommand;
+    public Shortener(Main plugin){
         this.plugin = plugin;
     }
 

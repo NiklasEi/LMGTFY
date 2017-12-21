@@ -20,10 +20,12 @@ public class LmgtfyCommand implements CommandExecutor {
     private final String clickCommand = UUID.randomUUID().toString();
     private Shortener shortener;
 
-    public LmgtfyCommand(Main plugin){
-        this.lang = plugin.getLang();
+    private String mode;
 
-        this.shortener = new Shortener(plugin, this);
+    public LmgtfyCommand(Main plugin, String mode){
+        this.lang = plugin.getLang();
+        this.mode = mode;
+        this.shortener = plugin.getShortener();
     }
 
     @Override
@@ -53,7 +55,17 @@ public class LmgtfyCommand implements CommandExecutor {
 
         String url;
         try {
-            url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
+            switch (mode){
+                case Main.LMGTFY:
+                    url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
+                    break;
+                case Main.GOOGLE:
+                    url = "https://www.google.com/search?q=" + URLEncoder.encode(query, "UTF-8");
+                    break;
+
+                default:
+                    return true;
+            }
         } catch (UnsupportedEncodingException e) {
             sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
             return true;
@@ -74,7 +86,7 @@ public class LmgtfyCommand implements CommandExecutor {
                 public void success(String s) {
                     sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_SUCCESS);
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender()
-                            , "tellraw " + createJSON(s, sender.getName()));
+                            , "tellraw " + createJSON(s, sender.getName(), cmd.getName()));
                 }
 
                 // called async!
@@ -82,13 +94,13 @@ public class LmgtfyCommand implements CommandExecutor {
                 public void fail(String s) {
                     sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_FAILED);
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender()
-                            , "tellraw " + createJSON(s, sender.getName()));
+                            , "tellraw " + createJSON(s, sender.getName(), cmd.getName()));
                 }
             });
         } else {
             sender.sendMessage(lang.PREFIX + lang.CMD_SUCCESS);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender()
-                    , "tellraw " + createJSON(url, sender.getName()));
+                    , "tellraw " + createJSON(url, sender.getName(), cmd.getName()));
         }
         return true;
     }
@@ -100,7 +112,7 @@ public class LmgtfyCommand implements CommandExecutor {
      * @param name player
      * @return JSON string
      */
-    private String createJSON(String url, String name){
+    private String createJSON(String url, String name, String cmd){
         boolean boldClick = true;
 
         String secondClick = "{\"text\":\"" + lang.CMD_MESSAGE_CLICK_TEXT_2.replace("%link%", url) + "\",\"color\":\""
@@ -117,7 +129,7 @@ public class LmgtfyCommand implements CommandExecutor {
                 + lang.CMD_MESSAGE_PRE_COLOR + "\"},{\"text\":\""
                 + lang.CMD_MESSAGE_CLICK_TEXT.replace("%link%", url) + "\",\"color\":\""
                 + lang.CMD_MESSAGE_CLICK_COLOR + "\",\"bold\":" + boldClick
-                + ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/lmgtfy "
+                + ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/" + cmd + " "
                 + clickCommand + " " + url
                 + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\""
                 + lang.CMD_MESSAGE_HOVER_TEXT.replace("%link%", url) + "\",\"color\":\""

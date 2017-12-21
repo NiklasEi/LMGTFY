@@ -9,6 +9,10 @@ commands:
     description: let me google that for you
     usage: /lmgtfy <search>
     aliases: [lmg]
+  google:
+    description: google stuff...
+    usage: /google <search>
+    aliases: []
 
 permissions:
   lmgtfy.*:

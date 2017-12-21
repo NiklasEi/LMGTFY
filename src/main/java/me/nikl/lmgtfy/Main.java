@@ -14,10 +14,15 @@ import java.io.*;
  * Let me google that for you...
  */
 public class Main extends JavaPlugin {
-    private Language lang;
-    private FileConfiguration config;
+
+    public static final String LMGTFY = "LMGTFY";
+    public static final String GOOGLE = "GOOGLE";
 
     public static boolean useShortener = true;
+
+    private Language lang;
+    private FileConfiguration config;
+    private Shortener shortener;
 
     @Override
     public void onEnable(){
@@ -39,13 +44,16 @@ public class Main extends JavaPlugin {
 
         useShortener = config.getBoolean("useShortener", true);
 
+        shortener = new Shortener(this);
         // save default language files form jar
         FileUtil.copyDefaultLanguageFiles();
 
         // get gamebox language file
         this.lang = new Language(this);
 
-        this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this));
+        shortener = new Shortener(this);
+        this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this, LMGTFY));
+        this.getCommand("google").setExecutor(new LmgtfyCommand(this, GOOGLE));
 
         return true;
     }
@@ -75,5 +83,9 @@ public class Main extends JavaPlugin {
     @Override
     public FileConfiguration getConfig() {
         return config;
+    }
+
+    public Shortener getShortener() {
+        return shortener;
     }
 }

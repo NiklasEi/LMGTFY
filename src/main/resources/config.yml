@@ -1,3 +1,22 @@
-# Let me google that for you
+# LMGTFY by Nikl
 
+
+
+# Options:
+#    default, default.yml             This option uses the up to date english language file
+#                                     from INSIDE the jar. With this option messages are not configurable!
+#
+#    lang_en.yml, lang_de.yml         These are default language files that are in the folder 'LMGTFY\language'.
+#                                     With these options you can customize messages by simply changing them
+#                                     inside the file you chose (then reload the plugin).
+#
+#    <your_lang_file>.yml             You can create any yml file inside the language folder and fully
+#                                     customize all messages :)
+#
+# If any messages are missing in the used file, they are taken from the default file.
 langFile: default
+
+# this option lets the plugin send a request to a link shortening service.
+# Then the shortened link is send instead of the full query link to lmgtfy
+#   Please note the rate limits for this service: https://is.gd/usagelimits.php
+useShortener: true

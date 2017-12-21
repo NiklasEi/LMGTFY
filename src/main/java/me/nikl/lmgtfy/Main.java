@@ -17,6 +17,7 @@ public class Main extends JavaPlugin {
     private Language lang;
     private FileConfiguration config;
 
+    public static boolean useShortener = true;
 
     @Override
     public void onEnable(){
@@ -36,13 +37,15 @@ public class Main extends JavaPlugin {
             return false;
         }
 
+        useShortener = config.getBoolean("useShortener", true);
+
         // save default language files form jar
         FileUtil.copyDefaultLanguageFiles();
 
         // get gamebox language file
         this.lang = new Language(this);
 
-        this.getCommand("lmgtfy").setExecutor(new LmgtfyCmd(this));
+        this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this));
 
         return true;
     }

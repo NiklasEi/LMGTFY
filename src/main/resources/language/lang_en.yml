@@ -20,6 +20,9 @@ jsonPrefix:
 command:
   noPermission: " You do not have permission to do that!"
   missingQuery: " Please add a query to search for."
+  shortenedSuccess: " Your link has been created and shortened."
+  shortenedFail: " Your link has been created, but we failed in shortening it. Sorry!"
+  linkSuccess: " Your link has been created."
 
 linkMessage:
   # this message is sent in the JSON format and has to be customised differently

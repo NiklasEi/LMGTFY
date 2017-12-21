@@ -44,7 +44,7 @@ public class Language {
             , JSON_PREFIX_AFTER_TEXT, JSON_PREFIX_AFTER_COLOR;
 
     // link message
-    public String CHAT_MESSAGE;
+    public String CHAT_MESSAGE, CMD_SHORTENED_SUCCESS, CMD_SHORTENED_FAILED, CMD_SUCCESS;
 
     public String CMD_MISSING_QUERY, CMD_NO_PERM;
 
@@ -85,6 +85,10 @@ public class Language {
 
         CMD_MISSING_QUERY = getString("command.noPermission");
         CMD_NO_PERM = getString("command.missingQuery");
+
+        CMD_SHORTENED_SUCCESS = getString("command.shortenedSuccess");
+        CMD_SHORTENED_FAILED = getString("command.shortenedFail");
+        CMD_SUCCESS = getString("command.linkSuccess");
     }
 
     private void getLinkMessage() {

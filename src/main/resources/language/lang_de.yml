@@ -52,4 +52,4 @@ linkMessage:
   afterText: ""
   afterColor: "blue"
 
-chatMessage: "&1 Hier klicken: &r%link%"
+chatMessage: "&1Hier klicken: &r%link%"

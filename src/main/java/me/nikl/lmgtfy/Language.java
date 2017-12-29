@@ -81,8 +81,8 @@ public class Language {
 
         CHAT_MESSAGE = getString("chatMessage");
 
-        CMD_MISSING_QUERY = getString("command.noPermission");
-        CMD_NO_PERM = getString("command.missingQuery");
+        CMD_MISSING_QUERY = getString("command.missingQuery");
+        CMD_NO_PERM = getString("command.noPermission");
 
         CMD_SHORTENED_SUCCESS = getString("command.shortenedSuccess");
         CMD_SHORTENED_FAILED = getString("command.shortenedFail");

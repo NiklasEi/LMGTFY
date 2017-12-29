@@ -1,5 +1,6 @@
 package me.nikl.lmgtfy;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import me.nikl.lmgtfy.util.FileUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -7,6 +8,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nikl on 19.12.17.
@@ -15,14 +18,13 @@ import java.io.*;
  */
 public class Main extends JavaPlugin {
 
-    public static final String LMGTFY = "LMGTFY";
-    public static final String GOOGLE = "GOOGLE";
-
     public static boolean useShortener = true;
 
     private Language lang;
     private FileConfiguration config;
     private Shortener shortener;
+
+    private Mode lmgtfyMode;
 
     @Override
     public void onEnable(){
@@ -48,14 +50,42 @@ public class Main extends JavaPlugin {
         // save default language files form jar
         FileUtil.copyDefaultLanguageFiles();
 
-        // get gamebox language file
+        // get language file
         this.lang = new Language(this);
 
         shortener = new Shortener(this);
-        this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this, LMGTFY));
-        this.getCommand("google").setExecutor(new LmgtfyCommand(this, GOOGLE));
+
+        try {
+            lmgtfyMode = Mode.valueOf(config.getString("lmgtfyMode", "google").toUpperCase());
+        } catch (IllegalArgumentException exception){
+            setDefaultLMGTFYMode();
+        }
+
+        if(lmgtfyMode.getLmgtfyMode() == null){
+            setDefaultLMGTFYMode();
+        }
+
+        this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this, lmgtfyMode, true));
+
+        for(Mode mode : Mode.values()) {
+            this.getCommand(mode.getCommand()).setExecutor(new LmgtfyCommand(this, mode));
+        }
 
         return true;
+    }
+
+    private void setDefaultLMGTFYMode() {
+        StringBuilder list = new StringBuilder();
+        list.append(Mode.GOOGLE.toString());
+        for (Mode mode : Mode.values()) {
+            if(mode.getLmgtfyMode() != null && !mode.getLmgtfyMode().isEmpty()){
+                list.append(", ").append(mode.toString());
+            }
+        }
+
+        getLogger().info("Invalid mode for lmgtfy. Falling back to default: GOOGLE");
+        getLogger().info("Valid options: " + list.toString());
+        lmgtfyMode = Mode.GOOGLE;
     }
 
     private boolean reloadConfiguration(){

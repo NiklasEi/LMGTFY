@@ -13,6 +13,26 @@ commands:
     description: google stuff...
     usage: /google <search>
     aliases: []
+  bing:
+    description: search stuff...
+    usage: /bing <search>
+    aliases: []
+  yahoo:
+    description: search stuff...
+    usage: /yahoo <search>
+    aliases: []
+  duckduckgo:
+    description: search stuff...
+    usage: /duckduckgo <search>
+    aliases: [ddg]
+  baidu:
+    description: search stuff...
+    usage: /baidu <search>
+    aliases: []
+  yandex:
+    description: search stuff...
+    usage: /yandex <search>
+    aliases: []
 
 permissions:
   lmgtfy.*:

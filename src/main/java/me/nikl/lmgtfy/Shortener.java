@@ -24,7 +24,6 @@ public class Shortener {
         new Lookup(link, callable).runTaskAsynchronously(plugin);
     }
 
-
     public interface Callable<T>{
         void success(T t);
         void fail(T t);

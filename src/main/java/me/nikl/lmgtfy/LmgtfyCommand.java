@@ -20,12 +20,20 @@ public class LmgtfyCommand implements CommandExecutor {
     private final String clickCommand = UUID.randomUUID().toString();
     private Shortener shortener;
 
-    private String mode;
+    private Mode mode;
 
-    public LmgtfyCommand(Main plugin, String mode){
+    private boolean lmgtfy;
+
+    public LmgtfyCommand(Main plugin, Mode mode, boolean lmgtfy){
         this.lang = plugin.getLang();
         this.mode = mode;
         this.shortener = plugin.getShortener();
+
+        this.lmgtfy = lmgtfy;
+    }
+
+    public LmgtfyCommand(Main plugin, Mode mode){
+        this(plugin, mode, false);
     }
 
     @Override
@@ -55,16 +63,37 @@ public class LmgtfyCommand implements CommandExecutor {
 
         String url;
         try {
-            switch (mode){
-                case Main.LMGTFY:
-                    url = "https://lmgtfy.com/?q=" + URLEncoder.encode(query, "UTF-8");
-                    break;
-                case Main.GOOGLE:
-                    url = "https://www.google.com/search?q=" + URLEncoder.encode(query, "UTF-8");
-                    break;
+            if(lmgtfy){
+                url = "https://lmgtfy.com/?" + mode.getLmgtfyMode() + "q=" + URLEncoder.encode(query, "UTF-8");
+            } else {
+                switch (mode) {
+                    case GOOGLE:
+                        url = "https://www.google.com/search?q=" + URLEncoder.encode(query, "UTF-8");
+                        break;
 
-                default:
-                    return true;
+                    case BING:
+                        url = "https://www.bing.com/search?q=" + URLEncoder.encode(query, "UTF-8");
+                        break;
+
+                    case YAHOO:
+                        url = "https://search.yahoo.com/search?p=" + URLEncoder.encode(query, "UTF-8");
+                        break;
+
+                    case DUCKDUCKGO:
+                        url = "https://duckduckgo.com/?q=" + URLEncoder.encode(query, "UTF-8");
+                        break;
+
+                    case BAIDU:
+                        url = "https://www.baidu.com/s?word=" + URLEncoder.encode(query, "UTF-8");
+                        break;
+
+                    case YANDEX:
+                        url = "https://www.yandex.ru/search/?text=" + URLEncoder.encode(query, "UTF-8");
+                        break;
+
+                    default:
+                        return true;
+                }
             }
         } catch (UnsupportedEncodingException e) {
             sender.sendMessage(lang.PREFIX + " Failed to create valid url...");

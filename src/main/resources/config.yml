@@ -20,3 +20,8 @@ langFile: default
 # Then the shortened link is send instead of the full query link to lmgtfy
 #   Please note the rate limits for this service: https://is.gd/usagelimits.php
 useShortener: true
+
+# lmgtfy mode
+#    Currently supported search engines: google, yahoo, bing and duckduckgo
+#    For an up to date list, please refer to the plugins page on Spigot
+lmgtfyMode: google

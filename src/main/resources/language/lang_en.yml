@@ -10,12 +10,12 @@ jsonPrefix:
   # colors for JSON have to be named! valid colors:
   #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
   #   green, aqua, red, light_purple, yellow, dark_gray, blue,
-  preText: "["
   preColor: "white"
-  text: "LMGTFY"
+  preText: "["
   color: "dark_aqua"
-  afterText: "]"
+  text: "LMGTFY"
   afterColor: "white"
+  afterText: "]"
 
 command:
   noPermission: " You do not have permission to do that!"
@@ -51,4 +51,4 @@ linkMessage:
   afterText: ""
   afterColor: "blue"
 
-chatMessage: "&1 Click here: &r%link%"
+chatMessage: "&1Click here: &r%link%"

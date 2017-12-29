@@ -1,6 +1,5 @@
 package me.nikl.lmgtfy;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import me.nikl.lmgtfy.util.FileUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -8,9 +7,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by nikl on 19.12.17.

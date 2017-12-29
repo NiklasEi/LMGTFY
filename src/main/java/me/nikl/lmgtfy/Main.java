@@ -2,6 +2,7 @@ package me.nikl.lmgtfy;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import me.nikl.lmgtfy.util.FileUtil;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -69,6 +70,14 @@ public class Main extends JavaPlugin {
 
         for(Mode mode : Mode.values()) {
             this.getCommand(mode.getCommand()).setExecutor(new LmgtfyCommand(this, mode));
+        }
+
+        if(config.getBoolean("bStats", true)){
+            Metrics metrics = new Metrics(this);
+
+            // Pie chart with the lmgtfy mode
+            metrics.addCustomChart(new Metrics.SimplePie("lmgtfy_mode"
+                    , () -> String.valueOf(lmgtfyMode.toString().toLowerCase())));
         }
 
         return true;

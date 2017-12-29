@@ -25,3 +25,7 @@ useShortener: true
 #    Currently supported search engines: google, yahoo, bing and duckduckgo
 #    For an up to date list, please refer to the plugins page on Spigot
 lmgtfyMode: google
+
+# toggle bStats
+#    see: https://bstats.org/plugin/bukkit/LMGTFY
+bStats: true

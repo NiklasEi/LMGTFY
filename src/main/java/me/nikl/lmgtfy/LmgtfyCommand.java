@@ -84,7 +84,7 @@ public class LmgtfyCommand implements CommandExecutor {
                         break;
 
                     case BAIDU:
-                        url = "https://www.baidu.com/s?word=" + URLEncoder.encode(query, "UTF-8");
+                        url = "https://www.baidu.com/s?ie=utf-8&word=" + URLEncoder.encode(query, "UTF-8");
                         break;
 
                     case YANDEX:

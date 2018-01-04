@@ -1,0 +1,57 @@
+# Translated by: montlikadani
+# használj & színkódokat
+#   a placeholders szerepelnek az üzenetek előtt
+
+
+prefix: "[&3LMGTFY&r]"
+name: "&3LMGTFY&r"
+
+
+jsonPrefix:
+  # a JSON színeit meg kell nevezni! érvényes színek:
+  #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
+  #   green, aqua, red, light_purple, yellow, dark_gray, blue,
+  preColor: "white"
+  preText: "["
+  color: "dark_aqua"
+  text: "LMGTFY"
+  afterColor: "white"
+  afterText: "]"
+
+command:
+  noPermission: " Nincs jogosultságod a használatára!"
+  missingQuery: " Kérjen egy lekérést a kereséshez."
+  shortenedSuccess: " A kapcsolatod létrejön és lerövidült."
+  shortenedFail: " A link létre lett hozva, de nem sikerült lecsökkenteni. Sajnálom!"
+  linkSuccess: " A linked létrehozva."
+
+linkMessage:
+  # ez az üzenet JSON formátumban kerül elküldésre
+
+  # Az üzenet 4 részből áll, és elküldi a játékost, amely korábban az egyik bővítmény parancsot futtatta
+  #   1. normál üzenet, mielőtt a kattintható és a lebegtethető részeket (előtte...)
+  #   2. kattintható rész lebegéses művelettel (az úgynevezett kattintás... / lebegő...)
+  #   3. második kattintható rész lebegtető művelettel (úgynevezett...2 / hover...2)
+  #   4. normál üzenet a kattintható rész után (hívás után...)
+
+  # a színeket meg kell nevezni! érvényes színek:
+  #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
+  #   green, aqua, red, light_purple, yellow, dark_gray, blue,
+
+  # %link% helyett a (esetleg rövidített) linket. Ha nem rövidítettük meg, akkor a link nagyon hosszú lehet
+  # a lekérdezésben.
+  preText: " %link% "
+  preColor: "white"
+  clickText: " (küldje el a chatbe)"
+  clickColor: "blue"
+  hoverText: "Kattints a link elküldéséhez"
+  hoverColor: "gold"
+  clickText2: " (menj a linkre)"
+  clickColor2: "blue"
+  hoverText2: "Kattints a link megnyitásához"
+  hoverColor2: "gold"
+  afterText: ""
+  afterColor: "blue"
+
+# %link% helyett a (rövidített) link
+chatMessage: "&1Kattints ide: &r%link%"

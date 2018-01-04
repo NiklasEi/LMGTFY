@@ -1,0 +1,54 @@
+# use & for colors
+#   placeholders will be listed in front of the messages
+
+
+prefix: "[&3你不能去百度吗&r]"
+name: "&3你不能去百度吗&r"
+
+
+jsonPrefix:
+  # colors for JSON have to be named! valid colors:
+  #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
+  #   green, aqua, red, light_purple, yellow, dark_gray, blue,
+  preColor: "white"
+  preText: "["
+  color: "dark_aqua"
+  text: "LMGTFY"
+  afterColor: "white"
+  afterText: "]"
+
+command:
+  noPermission: " 你没有权限!"
+  missingQuery: " 请输入要搜索的内容"
+  shortenedSuccess: " 你的搜索链接已被缩短并显示"
+  shortenedFail: " 链接已生成，但是缩短成短链接时出现故障"
+  linkSuccess: " 链接已生成"
+
+linkMessage:
+  # this message is sent in the JSON format and has to be customised differently
+
+  # The message that gets send to the invited player (if not opt out in the config) consists of four parts
+  #   1. normal message before the clickable and hover-able part (called pre-)
+  #   2. clickable part (called click-)
+  #   3. the clickable part also includes a hover action (called hover-)
+  #   4. normal message after the clickable part (called after-)
+
+  # colors have to be named! valid colors:
+  #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
+  #   green, aqua, red, light_purple, yellow, dark_gray, blue,
+
+  # %link% will be replaced with the lmgtfy link. That link can be pretty long, depending on the query.
+  preText: " %link% "
+  preColor: "white"
+  clickText: " (在聊天中发送)"
+  clickColor: "blue"
+  hoverText: "点击教萌新做人"
+  hoverColor: "gold"
+  clickText2: " (直接点开百度)"
+  clickColor2: "blue"
+  hoverText2: "直接打开链接"
+  hoverColor2: "gold"
+  afterText: ""
+  afterColor: "blue"
+
+chatMessage: "&a我的天，你不能去百度吗？点这里: &r%link%"

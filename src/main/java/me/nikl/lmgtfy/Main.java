@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class Main extends JavaPlugin {
 
-    public static boolean useShortener = true;
+    static boolean useShortener = true;
 
     private Language lang;
     private FileConfiguration config;
@@ -88,6 +88,7 @@ public class Main extends JavaPlugin {
         StringBuilder list = new StringBuilder();
         list.append(Mode.GOOGLE.toString());
         for (Mode mode : Mode.values()) {
+            // for google the mode is empty
             if(mode.getLmgtfyMode() != null && !mode.getLmgtfyMode().isEmpty()){
                 list.append(", ").append(mode.toString());
             }
@@ -116,7 +117,7 @@ public class Main extends JavaPlugin {
         return true;
     }
 
-    public Language getLang() {
+    Language getLang() {
         return lang;
     }
 
@@ -125,7 +126,7 @@ public class Main extends JavaPlugin {
         return config;
     }
 
-    public Shortener getShortener() {
+    Shortener getShortener() {
         return shortener;
     }
 }

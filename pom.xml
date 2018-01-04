@@ -6,9 +6,9 @@
 
     <groupId>me.nikl.lmgtfy</groupId>
     <artifactId>Lmgtfy</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
-    <description>Send lmgtfy links in the chat</description>
+    <description>Send lmgtfy and SE links in chat</description>
 
     <build>
         <finalName>LMGTFY</finalName>

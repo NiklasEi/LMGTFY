@@ -24,7 +24,7 @@ public class LmgtfyCommand implements CommandExecutor {
 
     private boolean lmgtfy;
 
-    public LmgtfyCommand(Main plugin, Mode mode, boolean lmgtfy){
+    LmgtfyCommand(Main plugin, Mode mode, boolean lmgtfy){
         this.lang = plugin.getLang();
         this.mode = mode;
         this.shortener = plugin.getShortener();
@@ -32,7 +32,7 @@ public class LmgtfyCommand implements CommandExecutor {
         this.lmgtfy = lmgtfy;
     }
 
-    public LmgtfyCommand(Main plugin, Mode mode){
+    LmgtfyCommand(Main plugin, Mode mode){
         this(plugin, mode, false);
     }
 

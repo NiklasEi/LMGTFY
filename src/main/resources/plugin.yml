@@ -1,7 +1,7 @@
 name: LMGTFY
 author: Nikl
 main: me.nikl.lmgtfy.Main
-version: 1.2.0
+version: 1.2.1
 website: nikl.me
 
 commands:
@@ -14,23 +14,23 @@ commands:
     usage: /google <search>
     aliases: []
   bing:
-    description: search stuff...
+    description: search stuff on bing
     usage: /bing <search>
     aliases: []
   yahoo:
-    description: search stuff...
+    description: search stuff on yahoo
     usage: /yahoo <search>
     aliases: []
   duckduckgo:
-    description: search stuff...
+    description: search stuff on duckduckgo
     usage: /duckduckgo <search>
     aliases: [ddg]
   baidu:
-    description: search stuff...
+    description: search stuff on baidu
     usage: /baidu <search>
     aliases: []
   yandex:
-    description: search stuff...
+    description: search stuff on yandex
     usage: /yandex <search>
     aliases: []
 

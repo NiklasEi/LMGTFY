@@ -34,7 +34,7 @@ public class Shortener {
         private String link;
         private Callable<String> callable;
 
-        public Lookup(String link, Callable<String> callable){
+        Lookup(String link, Callable<String> callable){
             this.link = link;
             this.callable = callable;
         }

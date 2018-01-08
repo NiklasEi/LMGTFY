@@ -23,6 +23,11 @@ public enum Mode {
         return this.command;
     }
 
+    /**
+     * Get the parameter that changes the lmgtfy search engine.
+     *
+     * @return lmgtfy se parameter
+     */
     String getLmgtfyMode(){
         return this.lmgtfyMode;
     }

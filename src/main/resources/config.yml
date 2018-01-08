@@ -6,8 +6,8 @@
 #    default, default.yml             This option uses the up to date english language file
 #                                     from INSIDE the jar. With this option messages are not configurable!
 #
-#    lang_en.yml, lang_de.yml         These are default language files that are in the folder 'LMGTFY\language'.
-#                                     With these options you can customize messages by simply changing them
+#    lang_en.yml, lang_de.yml,        These are default language files that are in the folder 'LMGTFY\language'.
+#    lang_zh-cn.yml                   With these options you can customize messages by simply changing them
 #                                     inside the file you chose (then reload the plugin).
 #
 #    <your_lang_file>.yml             You can create any yml file inside the language folder and fully
@@ -28,4 +28,5 @@ lmgtfyMode: google
 
 # toggle bStats
 #    see: https://bstats.org/plugin/bukkit/LMGTFY
+# please let me have my statistics :P
 bStats: true

@@ -1,3 +1,7 @@
+v 1.2.1:
+- add mandarin default lang file
+- more/updated comments in classes and config/language files
+
 v 1.2.0:
 - add 5 new search engines
 - support 4 different engines with lmgtfy

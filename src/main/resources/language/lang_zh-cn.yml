@@ -2,27 +2,27 @@
 #   placeholders will be listed in front of the messages
 
 
-prefix: "[&3LMGTFY&r]"
-name: "&3LMGTFY&r"
+prefix: "[&3你不能去百度吗&r]"
+name: "&3你不能去百度吗&r"
 
 
 jsonPrefix:
   # colors for JSON have to be named! valid colors:
   #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
   #   green, aqua, red, light_purple, yellow, dark_gray, blue,
-  preText: "["
   preColor: "white"
-  text: "LMGTFY"
+  preText: "["
   color: "dark_aqua"
-  afterText: "]"
+  text: "LMGTFY"
   afterColor: "white"
+  afterText: "]"
 
 command:
-  noPermission: " Keine Erlaubnis!"
-  missingQuery: " Bitte gebe eine Suchanfrage an."
-  shortenedSuccess: " Dein Link wurde erfolgreich erstellt und verkürzt."
-  shortenedFail: " Dein Link wurde erstellt, konnte aber nicht verkürzt werden."
-  linkSuccess: " Dein Link wurde erstellt."
+  noPermission: " 你没有权限!"
+  missingQuery: " 请输入要搜索的内容"
+  shortenedSuccess: " 你的搜索链接已被缩短并显示"
+  shortenedFail: " 链接已生成，但是缩短成短链接时出现故障"
+  linkSuccess: " 链接已生成"
 
 linkMessage:
   # this message is sent in the JSON format
@@ -41,16 +41,16 @@ linkMessage:
   # on the query.
   preText: " %link% "
   preColor: "white"
-  clickText: " (send in chat)"
+  clickText: " (在聊天中发送)"
   clickColor: "blue"
-  hoverText: "Klick um den Link im Chat zu senden"
+  hoverText: "点击教萌新做人"
   hoverColor: "gold"
-  clickText2: " (öffne den Link)"
+  clickText2: " (直接点开百度)"
   clickColor2: "blue"
-  hoverText2: "Klick um den Link zu öffnen"
+  hoverText2: "直接打开链接"
   hoverColor2: "gold"
   afterText: ""
   afterColor: "blue"
 
 # %link% will be replaced by the (shortened) link
-chatMessage: "&1Hier klicken: &r%link%"
+chatMessage: "&a我的天，你不能去百度吗？点这里: &r%link%"

@@ -1,3 +1,5 @@
+- fix possible problems with copying default language files, if jar is renamed to include chars that need encoding in an URL (like a space in the typical situation "LMGTFY (2).jar") 
+
 v 1.2.1:
 - add mandarin default lang file
 - more/updated comments in classes and config/language files

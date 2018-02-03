@@ -16,10 +16,26 @@
 # If any messages are missing in the used file, they are taken from the default file.
 langFile: default
 
-# this option lets the plugin send a request to a link shortening service.
-# Then the shortened link is send instead of the full query link to lmgtfy
-#   Please note the rate limits for this service: https://is.gd/usagelimits.php
+# Enable shortener?
 useShortener: true
+# List of available shortener ports
+#  - International https://is.gd/create.php?format=simple&url=
+#  - International https://u.nu/api.php?action=shorturl&format=simple&url=
+#  - International http://chilp.it/api.php?url=
+#  - International https://is.gd/api.php?longurl=
+#  - International https://v.gd/create.php?format=simple&url= (No recommended)
+#  - International http://www.jdem.cz/get?url=
+#  - Chinese http://suo.im/api.php?url=
+#  - Chinese http://api.ft12.com/api.php?url=
+#  - Chinese http://api.c7.gg/api.php?url=
+#  - Chinese http://api.kks.me/api.php?url=
+#  - Chinese http://api.u6.gg/api.php?url=
+#  - Chinese http://api.rrd.me/api.php?url=
+#  - Chinese http://api.uee.me/api.php?url=
+#  - Chinese http://www.hanhanzs.com/api?api=KbToxxJ3kcvG&url=
+#  - Default: http://is.gd/create.php?format=simple&url=
+#Current port (If the ports above dont work, please change http to https, or change https to http)
+Interface: "https://is.gd/create.php?format=simple&url="
 
 # lmgtfy mode
 #    Currently supported search engines: google, yahoo, bing and duckduckgo

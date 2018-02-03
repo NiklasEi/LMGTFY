@@ -32,3 +32,4 @@ public enum Mode {
         return this.lmgtfyMode;
     }
 }
+

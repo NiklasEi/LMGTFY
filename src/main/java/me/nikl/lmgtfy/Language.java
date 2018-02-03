@@ -1,242 +1,170 @@
 package me.nikl.lmgtfy;
 
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.net.URLEncoder;
+import java.util.UUID;
 
 /**
- * Created by nikl on 24.10.17.
+ * Created by nikl on 19.12.17.
  *
- * Hold messages and handle the language files.
- * Default files are handled in {@link me.nikl.lmgtfy.util.FileUtil}.
  */
-public class Language {
+public class LmgtfyCommand implements CommandExecutor {
 
-    private Main plugin;
+    private Language lang;
+    private final String clickCommand = UUID.randomUUID().toString();
+    private Shortener shortener;
 
-    private File languageFile;
+    private Mode mode;
 
-    private FileConfiguration defaultLanguage;
-    private FileConfiguration language;
+    private boolean lmgtfy;
 
-    public String PREFIX = "["+ChatColor.DARK_AQUA+"LMGTFY"+ChatColor.RESET+"]";
-    public String NAME = ChatColor.DARK_AQUA+"LMGTFY"+ChatColor.RESET;
-    public String PLAIN_PREFIX = ChatColor.stripColor(PREFIX);
-    public String PLAIN_NAME = ChatColor.stripColor(NAME);
-    public String DEFAULT_NAME, DEFAULT_PLAIN_NAME;
+    LmgtfyCommand(Main plugin, Mode mode, boolean lmgtfy){
+        this.lang = plugin.getLang();
+        this.mode = mode;
+        this.shortener = plugin.getShortener();
 
-
-
-    // player input
-    public String CMD_MESSAGE_PRE_TEXT, CMD_MESSAGE_PRE_COLOR, CMD_MESSAGE_CLICK_TEXT
-            , CMD_MESSAGE_CLICK_COLOR, CMD_MESSAGE_HOVER_TEXT, CMD_MESSAGE_HOVER_COLOR
-            , CMD_MESSAGE_AFTER_TEXT, CMD_MESSAGE_AFTER_COLOR, CMD_MESSAGE_CLICK_TEXT_2
-            , CMD_MESSAGE_CLICK_COLOR_2, CMD_MESSAGE_HOVER_TEXT_2, CMD_MESSAGE_HOVER_COLOR_2;
-
-    // JSON prefix parts (click invite message)
-    public String JSON_PREFIX_PRE_TEXT, JSON_PREFIX_PRE_COLOR, JSON_PREFIX_TEXT, JSON_PREFIX_COLOR
-            , JSON_PREFIX_AFTER_TEXT, JSON_PREFIX_AFTER_COLOR;
-
-    // link message
-    public String CHAT_MESSAGE, CMD_SHORTENED_SUCCESS, CMD_SHORTENED_FAILED, CMD_SUCCESS;
-
-    public String CMD_MISSING_QUERY, CMD_NO_PERM;
-
-
-    Language(Main plugin){
-        this.plugin = plugin;
-
-        getLangFile(plugin.getConfig());
-
-        PREFIX = getString("prefix");
-        NAME = getString("name");
-        PLAIN_PREFIX = ChatColor.stripColor(PREFIX);
-        PLAIN_NAME = ChatColor.stripColor(NAME);
-
-        DEFAULT_NAME = ChatColor.translateAlternateColorCodes('&'
-                , defaultLanguage.getString("name", "LMGTFY"));
-        DEFAULT_PLAIN_NAME = ChatColor.stripColor(DEFAULT_NAME);
-
-        loadMessages();
+        this.lmgtfy = lmgtfy;
     }
 
-    /**
-     * Load all messages from the language file
-     */
-    private void loadMessages(){
-
-        // JSON prefix
-
-        this.JSON_PREFIX_PRE_TEXT = getString("jsonPrefix.preText");
-        this.JSON_PREFIX_PRE_COLOR = getString("jsonPrefix.preColor");
-        this.JSON_PREFIX_TEXT = getString("jsonPrefix.text");
-        this.JSON_PREFIX_COLOR = getString("jsonPrefix.color");
-        this.JSON_PREFIX_AFTER_TEXT = getString("jsonPrefix.afterText");
-        this.JSON_PREFIX_AFTER_COLOR = getString("jsonPrefix.afterColor");
-        getLinkMessage();
-
-        CHAT_MESSAGE = getString("chatMessage");
-
-        CMD_MISSING_QUERY = getString("command.missingQuery");
-        CMD_NO_PERM = getString("command.noPermission");
-
-        CMD_SHORTENED_SUCCESS = getString("command.shortenedSuccess");
-        CMD_SHORTENED_FAILED = getString("command.shortenedFail");
-        CMD_SUCCESS = getString("command.linkSuccess");
+    LmgtfyCommand(Main plugin, Mode mode){
+        this(plugin, mode, false);
     }
 
-    private void getLinkMessage() {
-        // clickable invite message
-        this.CMD_MESSAGE_PRE_TEXT = getString("linkMessage.preText");
-        this.CMD_MESSAGE_PRE_COLOR = getString("linkMessage.preColor");
-        this.CMD_MESSAGE_CLICK_TEXT = getString("linkMessage.clickText");
-        this.CMD_MESSAGE_CLICK_COLOR = getString("linkMessage.clickColor");
-        this.CMD_MESSAGE_HOVER_TEXT = getString("linkMessage.hoverText");
-        this.CMD_MESSAGE_HOVER_COLOR = getString("linkMessage.hoverColor");
-        this.CMD_MESSAGE_AFTER_TEXT = getString("linkMessage.afterText");
-        this.CMD_MESSAGE_AFTER_COLOR = getString("linkMessage.afterColor");
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if(!sender.hasPermission("lmgtfy.use")){
+            sender.sendMessage(lang.PREFIX + lang.CMD_NO_PERM);
+            return true;
+        }
 
-        this.CMD_MESSAGE_CLICK_TEXT_2 = getString("linkMessage.clickText2");
-        this.CMD_MESSAGE_CLICK_COLOR_2 = getString("linkMessage.clickColor2");
-        this.CMD_MESSAGE_HOVER_TEXT_2 = getString("linkMessage.hoverText2");
-        this.CMD_MESSAGE_HOVER_COLOR_2 = getString("linkMessage.hoverColor2");
-    }
+        if(args == null || args.length == 0){
+            sender.sendMessage(lang.PREFIX + lang.CMD_MISSING_QUERY);
+            return true;
+        }
 
-    /**
-     * Try loading the language file specified in the
-     * passed file configuration.
-     *
-     * The required set option is 'langFile'. Possible options
-     * are:
-     * 'default'/'default.yml': loads the english language file from inside the jar
-     * 'lang_xx.yml': will try to load the given file inside the namespaces language folder
-     * @param config
-     */
-    private void getLangFile(FileConfiguration config) {
-        // load default language
+        // handle click on the click action...
+        //    this will send the link in the chat as the issuing player
+        if(args.length == 2 && args[0].equals(clickCommand)){
+            if(!(sender instanceof Player)){
+                // cannot happen
+                return true;
+            }
+            ((Player) sender).chat(lang.CHAT_MESSAGE.replace("%link%", args[1]));
+            return true;
+        }
+
+        String query = String.join(" ", args);
+
+        String url;
         try {
-            String defaultLangName = "language/lang_en.yml";
-            defaultLanguage = YamlConfiguration.loadConfiguration(
-                    new InputStreamReader(plugin.getResource(defaultLangName), "UTF-8"));
-        } catch (UnsupportedEncodingException e2) {
-            plugin.getLogger().warning("Failed to load default language file.");
-            e2.printStackTrace();
-        }
+            if(lmgtfy){
+                url = "https://lmgtfy.com/?" + mode.getLmgtfyMode() + "q=" + URLEncoder.encode(query, "UTF-8");
+            } else {
+                switch (mode) {
+                    case GOOGLE:
+                        url = "https://www.google.com/search?q=" + URLEncoder.encode(query, "UTF-8");
+                        break;
 
-        String fileName = config.getString("langFile");
+                    case BING:
+                        url = "https://www.bing.com/search?q=" + URLEncoder.encode(query, "UTF-8");
+                        break;
 
-        if(fileName != null && (fileName.equalsIgnoreCase("default") || fileName.equalsIgnoreCase("default.yml"))) {
-            language = defaultLanguage;
-            return;
-        }
+                    case YAHOO:
+                        url = "https://search.yahoo.com/search?p=" + URLEncoder.encode(query, "UTF-8");
+                        break;
 
-        if(fileName == null || !fileName.endsWith(".yml")){
-            plugin.getLogger().warning("Language file is not specified in config.");
-            plugin.getLogger().warning("Falling back to the default file...");
-            language = defaultLanguage;
-            return;
-        }
+                    case DUCKDUCKGO:
+                        url = "https://duckduckgo.com/?q=" + URLEncoder.encode(query, "UTF-8");
+                        break;
 
-        languageFile =
-                new File(plugin.getDataFolder().toString() + File.separatorChar + "language" + File.separatorChar
-                        + fileName);
+                    case BAIDU:
+                        url = "https://www.baidu.com/s?ie=utf-8&word=" + URLEncoder.encode(query, "UTF-8");
+                        break;
 
-        if(!languageFile.exists()){
-            plugin.getLogger().warning("The in config as 'langFile' configured file '" + fileName + "' does not exist!");
-            plugin.getLogger().warning("Falling back to the default file...");
-            language = defaultLanguage;
-            return;
-        }
+                    case YANDEX:
+                        url = "https://www.yandex.ru/search/?text=" + URLEncoder.encode(query, "UTF-8");
+                        break;
 
-        // File exists
-        try {
-            language = YamlConfiguration
-                    .loadConfiguration(new InputStreamReader(new FileInputStream(languageFile)
-                            , "UTF-8"));
-        } catch (UnsupportedEncodingException | FileNotFoundException e) {
-            e.printStackTrace();
-            plugin.getLogger().warning("Language file '" + plugin.getDataFolder().toString() + File.separatorChar + "language" + File.separatorChar
-                    + fileName + "' is not a valid yml.");
-            plugin.getLogger().warning("Falling back to the default file...");
-            language = defaultLanguage;
-        }
-
-        return;
-    }
-
-    /**
-     * Load list messages from the language file
-     *
-     * If the requested path is not valid for the chosen
-     * language file the corresponding list from the default
-     * file is returned.
-     * ChatColor can be translated here.
-     * @param path path to the message
-     * @param color if set, color the loaded message
-     * @return message
-     */
-    protected List<String> getStringList(String path, boolean color) {
-        List<String> toReturn;
-
-        // load from default file if path is not valid
-        if(!language.isList(path)){
-            toReturn = defaultLanguage.getStringList(path);
-            if(color && toReturn != null){
-                for(int i = 0; i<toReturn.size(); i++){
-                    toReturn.set(i, ChatColor.translateAlternateColorCodes('&',toReturn.get(i)));
+                    default:
+                        return true;
                 }
             }
-            return toReturn;
+        } catch (UnsupportedEncodingException e) {
+            sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
+            return true;
         }
 
-        // load from language file
-        toReturn = language.getStringList(path);
-        if(color && toReturn != null) {
-            for (int i = 0; i < toReturn.size(); i++) {
-                toReturn.set(i, ChatColor.translateAlternateColorCodes('&', toReturn.get(i)));
-            }
+        if(!(sender instanceof Player)) {
+            sender.sendMessage(lang.PREFIX + " " + url);
+            return true;
         }
-        return toReturn;
-    }
 
-    protected List<String> getStringList(String path){
-        return getStringList(path, true);
+        // ToDo: I don't like the workaround with tellraw, but sadly bukkit has no other way without packages.
+        //       For Spigot one could use SpigotPlayer and send the JSON without a command.
+
+        if(Main.useShortener) {
+            shortener.shortenAsync(url, new Shortener.Callable<String>() {
+                // called async!
+                @Override
+                public void success(String s) {
+                    sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_SUCCESS);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender()
+                            , "tellraw " + createJSON(s, sender.getName(), cmd.getName()));
+                }
+
+                // called async!
+                @Override
+                public void fail(String s) {
+                    sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_FAILED);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender()
+                            , "tellraw " + createJSON(s, sender.getName(), cmd.getName()));
+                }
+            });
+        } else {
+            sender.sendMessage(lang.PREFIX + lang.CMD_SUCCESS);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender()
+                    , "tellraw " + createJSON(url, sender.getName(), cmd.getName()));
+        }
+        return true;
     }
 
     /**
-     * Get a message from the language file
+     * Creates a JSON string that is ready to be send to a player per 'tellraw'
      *
-     * If the requested path is not valid for the
-     * configured language file the corresponding
-     * message from the default file is returned.
-     * ChatColor is translated when reading the message.
-     * @param path path to the message
-     * @param color if set, color the loaded message
-     * @return message
+     * @param url link to send
+     * @param name player
+     * @return JSON string
      */
-    protected String getString(String path, boolean color) {
-        String toReturn;
-        if(!language.isString(path)){
-            toReturn = defaultLanguage.getString(path);
-            if(color && toReturn != null){
-                return ChatColor.translateAlternateColorCodes('&', defaultLanguage.getString(path));
-            }
-            return toReturn;
-        }
-        toReturn = language.getString(path);
-        if(!color) return toReturn;
-        return ChatColor.translateAlternateColorCodes('&',toReturn);
-    }
+    private String createJSON(String url, String name, String cmd){
+        boolean boldClick = true;
 
-    protected String getString(String path){
-        return getString(path, true);
-    }
+        String secondClick = "{\"text\":\"" + lang.CMD_MESSAGE_CLICK_TEXT_2.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_CLICK_COLOR_2 + "\",\"bold\":" + boldClick + ",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url
+                + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"" + lang.CMD_MESSAGE_HOVER_TEXT_2.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_HOVER_COLOR_2 +"\"}}},";
 
+        return name
+                + " [{\"text\":\"" + lang.JSON_PREFIX_PRE_TEXT.replace("%link%", url) + "\",\"color\":\""
+                + lang.JSON_PREFIX_PRE_COLOR + "\"},{\"text\":\"" + lang.JSON_PREFIX_TEXT + "\",\"color\":\""
+                + lang.JSON_PREFIX_COLOR + "\"},{\"text\":\"" + lang.JSON_PREFIX_AFTER_TEXT + "\",\"color\":\""
+                + lang.JSON_PREFIX_AFTER_COLOR + "\"}"
+                + ",{\"text\":\"" + lang.CMD_MESSAGE_PRE_TEXT.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_PRE_COLOR + "\"},{\"text\":\""
+                + lang.CMD_MESSAGE_CLICK_TEXT.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_CLICK_COLOR + "\",\"bold\":" + boldClick
+                + ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/" + cmd + " "
+                + clickCommand + " " + url
+                + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\""
+                + lang.CMD_MESSAGE_HOVER_TEXT.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_HOVER_COLOR + "\"}}}, " + secondClick +  " {\"text\":\""
+                + lang.CMD_MESSAGE_AFTER_TEXT.replace("%link%", url) + "\",\"color\":\""
+                + lang.CMD_MESSAGE_AFTER_COLOR + "\"}]";
+    }
 }
+

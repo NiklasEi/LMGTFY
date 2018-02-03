@@ -1,17 +1,17 @@
 package me.nikl.lmgtfy;
 
-import me.nikl.lmgtfy.util.FileUtil;
-import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import me.nikl.lmgtfy.util.FileUtil;
 
 /**
  * Created by nikl on 19.12.17.
@@ -71,14 +71,6 @@ public class Main extends JavaPlugin {
 
         for(Mode mode : Mode.values()) {
             this.getCommand(mode.getCommand()).setExecutor(new LmgtfyCommand(this, mode));
-        }
-
-        if(config.getBoolean("bStats", true)){
-            Metrics metrics = new Metrics(this);
-
-            // Pie chart with the lmgtfy mode
-            metrics.addCustomChart(new Metrics.SimplePie("lmgtfy_mode"
-                    , () -> String.valueOf(lmgtfyMode.toString().toLowerCase())));
         }
 
         return true;

@@ -27,7 +27,8 @@ public class FileUtil {
      * whether it is already present in the plugins language folder.
      * If not it is copied.
      */
-    public static void copyDefaultLanguageFiles() {
+    @SuppressWarnings("rawtypes")
+	public static void copyDefaultLanguageFiles() {
         URL main = Main.class.getResource("Main.class");
         try {
             JarURLConnection connection = (JarURLConnection) main.openConnection();

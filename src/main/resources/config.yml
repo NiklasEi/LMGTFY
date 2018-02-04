@@ -44,39 +44,35 @@ Interface: "https://is.gd/create.php?format=simple&url="
 #######################################################################################################
 # Chinese search engine:
 #   - Youdao translation   http://www.youdao.com/search?q=
-#   - 360 search           http://www.so.com/s?ie=utf-8&src=360sou_home&q=
-#   - Baidu Post Bar       http://tieba.baidu.com/f?kw=
+#   - 360 search     ---   http://www.so.com/s?ie=utf-8&src=360sou_home&q=
+#   - Baidu Post Bar ---   http://tieba.baidu.com/f?kw=
 #   - Baidu Encyclopedia   https://baike.baidu.com/searchword/?word=
-#   - Sogou                https://m.sogou.com/web/searchList.jsp?s_from=pcsearch&keyword=
-#   - English Sogou        http://english.sogou.com/english?keyword=
-#   - English 360  https://en.so.com/s?q=
-#   - [My ability is limited, only to find these search engines]
+#   - Sogou          ---   https://m.sogou.com/web/searchList.jsp?s_from=pcsearch&keyword=
+#   - English Sogou  ---   http://english.sogou.com/english?keyword=
+#   - English 360    ---   https://en.so.com/s?q=
 #
 # American search engine:
-#   - CNetSearch https://www.search.com/web?q=
-#   - LookSmart  http://www.looksmart.com/search.php?look=L19&tags=from_home&q=
-#   - Goto       https://www.goto.com/search?q=
-#   - [My ability is limited, only to find these search engines]
+#   - CNetSearch     ---   https://www.search.com/web?q=
+#   - LookSmart      ---   http://www.looksmart.com/search.php?look=L19&tags=from_home&q=
+#   - Goto           ---   https://www.goto.com/search?q=
 #
 # Japanese search engine:
-#   - Ceek       http://www.ceek.jp/search.cgi?q=
-#   - [My ability is limited, only to find these search engines]
+#   - Ceek           ---   http://www.ceek.jp/search.cgi?q=
 #
 # British search engine:
-#   - Splut      http://www.splut.com/cgi/newquick.cgi?pattern=
-#   - [My ability is limited, only to find these search engines]
+#   - Splut          ---   http://www.splut.com/cgi/newquick.cgi?pattern=
 #
 # Korean search engine:
-#   - naver      https://m.search.naver.com/search.naver?sm=mtb_hty.top&where=m&query=
-#   - [My ability is limited, only to find these search engines]
+#   - naver          ---   https://m.search.naver.com/search.naver?sm=mtb_hty.top&where=m&query=
 #
 # German search engine:
-#   - Wlw        https://www.wlw.de/de/kategorien?utf8=%E2%9C%93&entered_search=1&q=
-#   - Fireball   https://fireball.de/q/
-#   - My ability is limited, only to find these search engines
+#   - Wlw            ---   https://www.wlw.de/de/kategorien?utf8=%E2%9C%93&entered_search=1&q=
+#   - Fireball       ---   https://fireball.de/q/
+#
+# My ability is limited, only to find these search engines
 # Custom Search Engine (Use / search <content> to search)
 CustomEngine: "http://english.sogou.com/english?keyword="
-#   - Default   http://english.sogou.com/english?keyword=
+#   - Default              http://english.sogou.com/english?keyword=
 #######################################################################################################
 
 #######################################################################################################

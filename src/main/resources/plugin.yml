@@ -33,6 +33,10 @@ commands:
     description: search stuff on yandex
     usage: /yandex <search>
     aliases: []
+  search:
+    description: Custom search engine
+    usage: /search <search>
+    aliases: []
 
 permissions:
   lmgtfy.*:

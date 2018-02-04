@@ -10,7 +10,8 @@ public enum Mode {
     YAHOO("yahoo", "s=y&"),
     DUCKDUCKGO("duckduckgo", "s=d&"),
     BAIDU("baidu", null),
-    YANDEX("yandex", null);
+    YANDEX("yandex", null),
+	SEARCH("search", null);
 
     private String command, lmgtfyMode;
 

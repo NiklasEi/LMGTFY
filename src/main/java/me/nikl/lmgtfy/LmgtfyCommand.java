@@ -15,12 +15,12 @@ import java.util.UUID;
  *
  */
 public class LmgtfyCommand implements CommandExecutor {
-
-    private Language lang;
+	private Language lang;
     private final String clickCommand = UUID.randomUUID().toString();
     private Shortener shortener;
 
     private Mode mode;
+    private String ZDY;
 
     private boolean lmgtfy;
 
@@ -34,6 +34,7 @@ public class LmgtfyCommand implements CommandExecutor {
 
     LmgtfyCommand(Main plugin, Mode mode){
         this(plugin, mode, false);
+        this.ZDY = plugin.getConfig().getString("CustomEngine");
     }
 
     @Override
@@ -89,6 +90,10 @@ public class LmgtfyCommand implements CommandExecutor {
 
                     case YANDEX:
                         url = "https://www.yandex.ru/search/?text=" + URLEncoder.encode(query, "UTF-8");
+                        break;
+
+                    case SEARCH:
+                        url = ZDY + URLEncoder.encode(query, "UTF-8");
                         break;
 
                     default:

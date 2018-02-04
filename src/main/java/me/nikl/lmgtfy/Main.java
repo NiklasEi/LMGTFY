@@ -31,6 +31,10 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable(){
 
+        getLogger().info("LMGTFY Has been loaded to the server!");
+        getLogger().info("Has support for custom short link interface!");
+        getLogger().info("Custom search engine already supported!");
+        
         if (!reload()) {
             getLogger().severe(" Problem while loading the plugin! Plugin was disabled!");
 

@@ -1,32 +1,90 @@
-# LMGTFY by Nikl
+#######################################################################################################
+# LMGTFY by Nikl                                                                                      #
+#######################################################################################################
 
-
-
+#######################################################################################################
 # Options:
-#    default, default.yml             This option uses the up to date english language file
-#                                     from INSIDE the jar. With this option messages are not configurable!
+#   default, default.yml        This option uses the up to date english language file
+#                               from INSIDE the jar. With this option messages are not configurable!
 #
-#    lang_en.yml, lang_de.yml,        These are default language files that are in the folder 'LMGTFY\language'.
-#    lang_zh-cn.yml                   With these options you can customize messages by simply changing them
-#                                     inside the file you chose (then reload the plugin).
+#   lang_en.yml, lang_de.yml,   These are default language files that are in the folder 'LMGTFY\language'.
+#   lang_zh-cn.yml              With these options you can customize messages by simply changing them
+#                               inside the file you chose (then reload the plugin).
 #
-#    <your_lang_file>.yml             You can create any yml file inside the language folder and fully
-#                                     customize all messages :)
+#   <your_lang_file>.yml        You can create any yml file inside the language folder and fully
+#                               customize all messages :)
 #
 # If any messages are missing in the used file, they are taken from the default file.
 langFile: default
+#######################################################################################################
 
-# this option lets the plugin send a request to a link shortening service.
-# Then the shortened link is send instead of the full query link to lmgtfy
-#   Please note the rate limits for this service: https://is.gd/usagelimits.php
+#######################################################################################################
+#  Enable shortener?
 useShortener: true
+#  List of available shortener ports
+#   - International https://is.gd/create.php?format=simple&url=
+#   - International https://u.nu/api.php?action=shorturl&format=simple&url=
+#   - International http://chilp.it/api.php?url=
+#   - International https://is.gd/api.php?longurl=
+#   - International https://v.gd/create.php?format=simple&url= (No recommended)
+#   - International http://www.jdem.cz/get?url=
+#   - Chinese http://suo.im/api.php?url=
+#   - Chinese http://api.ft12.com/api.php?url=
+#   - Chinese http://api.c7.gg/api.php?url=
+#   - Chinese http://api.kks.me/api.php?url=
+#   - Chinese http://api.u6.gg/api.php?url=
+#   - Chinese http://api.rrd.me/api.php?url=
+#   - Chinese http://api.uee.me/api.php?url=
+#   - Chinese http://www.hanhanzs.com/api?api=KbToxxJ3kcvG&url=
+#   - Default: http://is.gd/create.php?format=simple&url=
+# Current port (If the ports above dont work, please change http to https, or change https to http)
+Interface: "https://is.gd/create.php?format=simple&url="
+#######################################################################################################
 
+#######################################################################################################
+# Chinese search engine:
+#   - Youdao translation   http://www.youdao.com/search?q=
+#   - 360 search     ---   http://www.so.com/s?ie=utf-8&src=360sou_home&q=
+#   - Baidu Post Bar ---   http://tieba.baidu.com/f?kw=
+#   - Baidu Encyclopedia   https://baike.baidu.com/searchword/?word=
+#   - Sogou          ---   https://m.sogou.com/web/searchList.jsp?s_from=pcsearch&keyword=
+#   - English Sogou  ---   http://english.sogou.com/english?keyword=
+#   - English 360    ---   https://en.so.com/s?q=
+#
+# American search engine:
+#   - CNetSearch     ---   https://www.search.com/web?q=
+#   - LookSmart      ---   http://www.looksmart.com/search.php?look=L19&tags=from_home&q=
+#   - Goto           ---   https://www.goto.com/search?q=
+#
+# Japanese search engine:
+#   - Ceek           ---   http://www.ceek.jp/search.cgi?q=
+#
+# British search engine:
+#   - Splut          ---   http://www.splut.com/cgi/newquick.cgi?pattern=
+#
+# Korean search engine:
+#   - naver          ---   https://m.search.naver.com/search.naver?sm=mtb_hty.top&where=m&query=
+#
+# German search engine:
+#   - Wlw            ---   https://www.wlw.de/de/kategorien?utf8=%E2%9C%93&entered_search=1&q=
+#   - Fireball       ---   https://fireball.de/q/
+#
+# My ability is limited, only to find these search engines
+# Custom Search Engine (Use / search <content> to search)
+CustomEngine: "http://english.sogou.com/english?keyword="
+#   - Default        ---   http://english.sogou.com/english?keyword=
+#######################################################################################################
+
+#######################################################################################################
 # lmgtfy mode
 #    Currently supported search engines: google, yahoo, bing and duckduckgo
 #    For an up to date list, please refer to the plugins page on Spigot
 lmgtfyMode: google
+#######################################################################################################
 
+#######################################################################################################
 # toggle bStats
 #    see: https://bstats.org/plugin/bukkit/LMGTFY
 # please let me have my statistics :P
 bStats: true
+#######################################################################################################

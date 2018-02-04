@@ -1,0 +1,48 @@
+name: LMGTFY
+author: Nikl
+main: me.nikl.lmgtfy.Main
+version: 1.2.1
+website: nikl.me
+
+commands:
+  lmgtfy:
+    description: let me google that for you
+    usage: /lmgtfy <search>
+    aliases: [lmg]
+  google:
+    description: google stuff...
+    usage: /google <search>
+    aliases: []
+  bing:
+    description: search stuff on bing
+    usage: /bing <search>
+    aliases: []
+  yahoo:
+    description: search stuff on yahoo
+    usage: /yahoo <search>
+    aliases: []
+  duckduckgo:
+    description: search stuff on duckduckgo
+    usage: /duckduckgo <search>
+    aliases: [ddg]
+  baidu:
+    description: search stuff on baidu
+    usage: /baidu <search>
+    aliases: []
+  yandex:
+    description: search stuff on yandex
+    usage: /yandex <search>
+    aliases: []
+  search:
+    description: Custom search engine
+    usage: /search <search>
+    aliases: []
+
+permissions:
+  lmgtfy.*:
+    description: Gives all permissions
+    children:
+      lmgtfy.use: true
+  lmgtfy.use:
+    description: Allows to create lmgtfy links
+    default: true

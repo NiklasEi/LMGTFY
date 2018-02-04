@@ -72,7 +72,7 @@ Interface: "https://is.gd/create.php?format=simple&url="
 # My ability is limited, only to find these search engines
 # Custom Search Engine (Use / search <content> to search)
 CustomEngine: "http://english.sogou.com/english?keyword="
-#   - Default              http://english.sogou.com/english?keyword=
+#   - Default        ---   http://english.sogou.com/english?keyword=
 #######################################################################################################
 
 #######################################################################################################

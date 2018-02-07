@@ -1,4 +1,7 @@
 - fix possible problems with copying default language files, if jar is renamed to include chars that need encoding in an URL (like a space in the typical situation "LMGTFY (2).jar") 
+- boolean option renamed to: useShorteningService
+- custom shortening services
+
 
 v 1.2.1:
 - add mandarin default lang file

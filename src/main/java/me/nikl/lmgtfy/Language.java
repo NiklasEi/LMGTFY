@@ -52,18 +52,10 @@ public class Language {
 
     Language(Main plugin){
         this.plugin = plugin;
+    }
 
+    void reload(){
         getLangFile(plugin.getConfig());
-
-        PREFIX = getString("prefix");
-        NAME = getString("name");
-        PLAIN_PREFIX = ChatColor.stripColor(PREFIX);
-        PLAIN_NAME = ChatColor.stripColor(NAME);
-
-        DEFAULT_NAME = ChatColor.translateAlternateColorCodes('&'
-                , defaultLanguage.getString("name", "LMGTFY"));
-        DEFAULT_PLAIN_NAME = ChatColor.stripColor(DEFAULT_NAME);
-
         loadMessages();
     }
 
@@ -71,9 +63,15 @@ public class Language {
      * Load all messages from the language file
      */
     private void loadMessages(){
+        PREFIX = getString("prefix");
+        NAME = getString("name");
+        PLAIN_PREFIX = ChatColor.stripColor(PREFIX);
+        PLAIN_NAME = ChatColor.stripColor(NAME);
+        DEFAULT_NAME = ChatColor.translateAlternateColorCodes('&'
+                , defaultLanguage.getString("name", "LMGTFY"));
+        DEFAULT_PLAIN_NAME = ChatColor.stripColor(DEFAULT_NAME);
 
         // JSON prefix
-
         this.JSON_PREFIX_PRE_TEXT = getString("jsonPrefix.preText");
         this.JSON_PREFIX_PRE_COLOR = getString("jsonPrefix.preColor");
         this.JSON_PREFIX_TEXT = getString("jsonPrefix.text");

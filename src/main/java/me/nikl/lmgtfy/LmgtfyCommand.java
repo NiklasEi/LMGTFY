@@ -11,29 +11,30 @@ import java.net.URLEncoder;
 import java.util.UUID;
 
 /**
- * Created by nikl on 19.12.17.
+ * Command for any SE that has a corresponding {@link SearchEngine}.
  *
+ * @author Niklas Eicker
  */
 public class LmgtfyCommand implements CommandExecutor {
 
     private Language lang;
     private final String clickCommand = UUID.randomUUID().toString();
-    private Shortener shortener;
+    private ShorteningService shorteningService;
 
-    private Mode mode;
+    private SearchEngine searchEngine;
 
     private boolean lmgtfy;
 
-    LmgtfyCommand(Main plugin, Mode mode, boolean lmgtfy){
+    LmgtfyCommand(Main plugin, SearchEngine searchEngine, boolean lmgtfy){
         this.lang = plugin.getLang();
-        this.mode = mode;
-        this.shortener = plugin.getShortener();
+        this.searchEngine = searchEngine;
+        this.shorteningService = plugin.getShorteningService();
 
         this.lmgtfy = lmgtfy;
     }
 
-    LmgtfyCommand(Main plugin, Mode mode){
-        this(plugin, mode, false);
+    LmgtfyCommand(Main plugin, SearchEngine searchEngine){
+        this(plugin, searchEngine, false);
     }
 
     @Override
@@ -42,12 +43,10 @@ public class LmgtfyCommand implements CommandExecutor {
             sender.sendMessage(lang.PREFIX + lang.CMD_NO_PERM);
             return true;
         }
-
         if(args == null || args.length == 0){
             sender.sendMessage(lang.PREFIX + lang.CMD_MISSING_QUERY);
             return true;
         }
-
         // handle click on the click action...
         //    this will send the link in the chat as the issuing player
         if(args.length == 2 && args[0].equals(clickCommand)){
@@ -58,64 +57,58 @@ public class LmgtfyCommand implements CommandExecutor {
             ((Player) sender).chat(lang.CHAT_MESSAGE.replace("%link%", args[1]));
             return true;
         }
-
         String query = String.join(" ", args);
-
         String url;
         try {
-            if(lmgtfy){
-                url = "https://lmgtfy.com/?" + mode.getLmgtfyMode() + "q=" + URLEncoder.encode(query, "UTF-8");
-            } else {
-                switch (mode) {
-                    case GOOGLE:
-                        url = "https://www.google.com/search?q=" + URLEncoder.encode(query, "UTF-8");
-                        break;
-
-                    case BING:
-                        url = "https://www.bing.com/search?q=" + URLEncoder.encode(query, "UTF-8");
-                        break;
-
-                    case YAHOO:
-                        url = "https://search.yahoo.com/search?p=" + URLEncoder.encode(query, "UTF-8");
-                        break;
-
-                    case DUCKDUCKGO:
-                        url = "https://duckduckgo.com/?q=" + URLEncoder.encode(query, "UTF-8");
-                        break;
-
-                    case BAIDU:
-                        url = "https://www.baidu.com/s?ie=utf-8&word=" + URLEncoder.encode(query, "UTF-8");
-                        break;
-
-                    case YANDEX:
-                        url = "https://www.yandex.ru/search/?text=" + URLEncoder.encode(query, "UTF-8");
-                        break;
-
-                    default:
-                        return true;
-                }
-            }
+            url = getUrl(query);
         } catch (UnsupportedEncodingException e) {
             sender.sendMessage(lang.PREFIX + " Failed to create valid url...");
             return true;
         }
 
         if(!(sender instanceof Player)) {
-            sender.sendMessage(lang.PREFIX + " " + url);
+            handleNonPlayerRequest(sender, url);
             return true;
         }
+        handlePlayerRequest(sender, url, cmd.getName());
+        return true;
+    }
 
-        // ToDo: I don't like the workaround with tellraw, but sadly bukkit has no other way without packages.
-        //       For Spigot one could use SpigotPlayer and send the JSON without a command.
-
-        if(Main.useShortener) {
-            shortener.shortenAsync(url, new Shortener.Callable<String>() {
+    private void handleNonPlayerRequest(CommandSender sender, String url) {
+        if(Main.useShorteningService) {
+            shorteningService.shortenAsync(url, new ShorteningService.Callable<String>() {
                 // called async!
                 @Override
                 public void success(String s) {
                     sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_SUCCESS);
+                    sender.sendMessage("Link: " + s);
+                }
+
+                // called async!
+                @Override
+                public void fail(String s) {
+                    sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_FAILED);
+                    sender.sendMessage("Link: " + url);
+                }
+            });
+        } else {
+            sender.sendMessage(lang.PREFIX + lang.CMD_SUCCESS);
+            sender.sendMessage("Link: " + url);
+        }
+    }
+
+    private void handlePlayerRequest(CommandSender sender, String url, String commandName) {
+        // ToDo: I don't like the workaround with tellraw, but sadly bukkit has no other way without packages.
+        //       For Spigot one could use SpigotPlayer and send the JSON without a command.
+
+        if(Main.useShorteningService) {
+            shorteningService.shortenAsync(url, new ShorteningService.Callable<String>() {
+                // called async!
+                @Override
+                public void success(String shortenedLink) {
+                    sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_SUCCESS);
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender()
-                            , "tellraw " + createJSON(s, sender.getName(), cmd.getName()));
+                            , "tellraw " + sender.getName() + " " + createJSON(shortenedLink, commandName));
                 }
 
                 // called async!
@@ -123,15 +116,21 @@ public class LmgtfyCommand implements CommandExecutor {
                 public void fail(String s) {
                     sender.sendMessage(lang.PREFIX + lang.CMD_SHORTENED_FAILED);
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender()
-                            , "tellraw " + createJSON(s, sender.getName(), cmd.getName()));
+                            , "tellraw " + sender.getName() + " " + createJSON(url, commandName));
                 }
             });
         } else {
             sender.sendMessage(lang.PREFIX + lang.CMD_SUCCESS);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender()
-                    , "tellraw " + createJSON(url, sender.getName(), cmd.getName()));
+                    , "tellraw " + sender.getName() + " " + createJSON(url, commandName));
         }
-        return true;
+    }
+
+    private String getUrl(String query) throws UnsupportedEncodingException {
+        if(lmgtfy) {
+            return "https://lmgtfy.com/?" + searchEngine.getLmgtfyMode() + "q=" + URLEncoder.encode(query, "UTF-8");
+        }
+        return searchEngine.getSearchLink() + URLEncoder.encode(query, "UTF-8");
     }
 
     /**
@@ -141,16 +140,13 @@ public class LmgtfyCommand implements CommandExecutor {
      * @param name player
      * @return JSON string
      */
-    private String createJSON(String url, String name, String cmd){
+    private String createJSON(String url, String cmd){
         boolean boldClick = true;
-
         String secondClick = "{\"text\":\"" + lang.CMD_MESSAGE_CLICK_TEXT_2.replace("%link%", url) + "\",\"color\":\""
                 + lang.CMD_MESSAGE_CLICK_COLOR_2 + "\",\"bold\":" + boldClick + ",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url
                 + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"" + lang.CMD_MESSAGE_HOVER_TEXT_2.replace("%link%", url) + "\",\"color\":\""
                 + lang.CMD_MESSAGE_HOVER_COLOR_2 +"\"}}},";
-
-        return name
-                + " [{\"text\":\"" + lang.JSON_PREFIX_PRE_TEXT.replace("%link%", url) + "\",\"color\":\""
+        return "[{\"text\":\"" + lang.JSON_PREFIX_PRE_TEXT.replace("%link%", url) + "\",\"color\":\""
                 + lang.JSON_PREFIX_PRE_COLOR + "\"},{\"text\":\"" + lang.JSON_PREFIX_TEXT + "\",\"color\":\""
                 + lang.JSON_PREFIX_COLOR + "\"},{\"text\":\"" + lang.JSON_PREFIX_AFTER_TEXT + "\",\"color\":\""
                 + lang.JSON_PREFIX_AFTER_COLOR + "\"}"

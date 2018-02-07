@@ -20,83 +20,81 @@ import java.io.UnsupportedEncodingException;
  */
 public class Main extends JavaPlugin {
 
-    static boolean useShortener = true;
+    static boolean useShorteningService = true;
 
     private Language lang;
     private FileConfiguration config;
-    private Shortener shortener;
+    private ShorteningService shorteningService;
 
-    private Mode lmgtfyMode;
+    private SearchEngine lmgtfyMode;
 
     @Override
     public void onEnable(){
-
         if (!reload()) {
             getLogger().severe(" Problem while loading the plugin! Plugin was disabled!");
 
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+        setUpCommands();
+        setUpMetrics();
     }
 
-    private boolean reload() {
-
+    boolean reload() {
         if(!reloadConfiguration()){
             getLogger().severe(" Failed to load config file!");
             return false;
         }
-
-        useShortener = config.getBoolean("useShortener", true);
-
-        shortener = new Shortener(this);
-        // save default language files form jar
+        useShorteningService = config.getBoolean("useShorteningService", true);
+        if(shorteningService == null) this.shorteningService = new ShorteningService(this);
+        if(lang == null) this.lang = new Language(this);
         FileUtil.copyDefaultLanguageFiles();
+        lang.reload();
+        shorteningService.reload();
+        setLMGTFYMode();
+        return true;
+    }
 
-        // get language file
-        this.lang = new Language(this);
-
-        shortener = new Shortener(this);
-
-        try {
-            lmgtfyMode = Mode.valueOf(config.getString("lmgtfyMode", "google").toUpperCase());
-        } catch (IllegalArgumentException exception){
-            setDefaultLMGTFYMode();
-        }
-
-        if(lmgtfyMode.getLmgtfyMode() == null){
-            setDefaultLMGTFYMode();
-        }
-
+    private void setUpCommands() {
+        this.getCommand("lmgtfyreload").setExecutor(new ReloadCommand(this));
         this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this, lmgtfyMode, true));
-
-        for(Mode mode : Mode.values()) {
+        for(SearchEngine mode : SearchEngine.values()) {
             this.getCommand(mode.getCommand()).setExecutor(new LmgtfyCommand(this, mode));
         }
+    }
 
+    private void setUpMetrics() {
         if(config.getBoolean("bStats", true)){
             Metrics metrics = new Metrics(this);
-
             // Pie chart with the lmgtfy mode
             metrics.addCustomChart(new Metrics.SimplePie("lmgtfy_mode"
                     , () -> String.valueOf(lmgtfyMode.toString().toLowerCase())));
         }
+    }
 
-        return true;
+    private void setLMGTFYMode() {
+        try {
+            lmgtfyMode = SearchEngine.valueOf(config.getString("lmgtfyMode", "google").toUpperCase());
+        } catch (IllegalArgumentException exception){
+            setDefaultLMGTFYMode();
+        }
+        if(lmgtfyMode.getLmgtfyMode() == null){
+            setDefaultLMGTFYMode();
+        }
     }
 
     private void setDefaultLMGTFYMode() {
         StringBuilder list = new StringBuilder();
-        list.append(Mode.GOOGLE.toString());
-        for (Mode mode : Mode.values()) {
+        list.append(SearchEngine.GOOGLE.toString());
+        for (SearchEngine mode : SearchEngine.values()) {
             // for google the mode is empty
             if(mode.getLmgtfyMode() != null && !mode.getLmgtfyMode().isEmpty()){
                 list.append(", ").append(mode.toString());
             }
         }
-
         getLogger().info("Invalid mode for lmgtfy. Falling back to default: GOOGLE");
         getLogger().info("Valid options: " + list.toString());
-        lmgtfyMode = Mode.GOOGLE;
+        lmgtfyMode = SearchEngine.GOOGLE;
     }
 
     private boolean reloadConfiguration(){
@@ -126,7 +124,7 @@ public class Main extends JavaPlugin {
         return config;
     }
 
-    Shortener getShortener() {
-        return shortener;
+    ShorteningService getShorteningService() {
+        return shorteningService;
     }
 }

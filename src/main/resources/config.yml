@@ -19,7 +19,20 @@ langFile: default
 # this option lets the plugin send a request to a link shortening service.
 # Then the shortened link is send instead of the full query link to lmgtfy
 #   Please note the rate limits for this service: https://is.gd/usagelimits.php
-useShortener: true
+useShorteningService: true
+
+# An example list of shortening services
+# It works with others, too. So if you know a different service, just try it out.
+#  - International http://chilp.it/api.php?url=
+#  - International https://is.gd/api.php?longurl=
+#  - International https://v.gd/create.php?format=simple&url=
+#  - Chinese http://suo.im/api.php?url=
+#  - Chinese http://api.ft12.com/api.php?url=
+#  - Chinese http://api.kks.me/api.php?url=
+#  - Chinese http://api.u6.gg/api.php?url=
+#  - Chinese http://api.rrd.me/api.php?url=
+#  - Chinese http://api.uee.me/api.php?url=
+shortener: "https://is.gd/api.php?longurl="
 
 # lmgtfy mode
 #    Currently supported search engines: google, yahoo, bing and duckduckgo

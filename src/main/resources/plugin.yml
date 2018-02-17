@@ -1,7 +1,7 @@
 name: LMGTFY
 author: Nikl
 main: me.nikl.lmgtfy.Main
-version: 1.3.0
+version: 1.4.0
 website: nikl.me
 
 commands:
@@ -43,6 +43,10 @@ permissions:
     description: Gives all permissions
     children:
       lmgtfy.use: true
+      lmgtfy.bypass: true
   lmgtfy.use:
     description: Allows to create lmgtfy links
     default: true
+  lmgtfy.bypass:
+    description: Bypass the cool down
+    default: false

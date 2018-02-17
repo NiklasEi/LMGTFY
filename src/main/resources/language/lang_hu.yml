@@ -1,0 +1,65 @@
+# Translated by: montlikadani
+# használj & színkódokat
+#   a placeholders szerepelnek az üzenetek előtt
+
+
+prefix: "[&3LMGTFY&r]"
+name: "&3LMGTFY&r"
+
+
+jsonPrefix:
+  # a JSON színeit meg kell nevezni! érvényes színek:
+  #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
+  #   green, aqua, red, light_purple, yellow, dark_gray, blue,
+  preColor: "white"
+  preText: "["
+  color: "dark_aqua"
+  text: "LMGTFY"
+  afterColor: "white"
+  afterText: "]"
+
+command:
+  noPermission: " Nincs jogosultságod a használatára!"
+  missingQuery: " Kérjen egy lekérést a kereséshez."
+  shortenedSuccess: " A kapcsolatod létrejön és lerövidült."
+  shortenedFail: " A link létre lett hozva, de nem sikerült lecsökkenteni. Sajnálom!"
+  linkSuccess: " A linked létrehozva."
+  # Formátumok: %minutes%, %seconds%, %mm:ss%
+  cooldown: " Ezt újra megteheted %mm:ss% perc múlva.
+
+# ez az üzenet JSON formátumban kerül elküldésre
+
+# Az üzenet 4 részből áll, és elküldi a játékost, amely korábban az egyik bővítmény parancsot futtatta
+#   1. normál üzenetet, mielőtt a kattintható és a lebegtethető részeket (előtte...)
+#   2. kattintható rész lebegéses művelettel (az úgynevezett kattintás... / lebegés...)
+#   3. második kattintható rész lebegtető művelettel (úgynevezett...2 / lebegés...2)
+#   4. normál üzenet a kattintható rész után (hívás után...)
+
+# a színeket meg kell nevezni! érvényes színek:
+#   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
+#   green, aqua, red, light_purple, yellow, dark_gray, blue,
+linkMessage:
+  preColor: "white"
+  preText: " Akciók:"
+  clickColor: "blue"
+  clickText: " [a chatben]"
+  hoverColor: "gold"
+  hoverText: "Kattintson a link elküldéséhez"
+  clickColor2: "blue"
+  clickText2: " [link megnyitása]"
+  hoverColor2: "gold"
+  hoverText2: "Kattints a link megnyitásához"
+  afterText: ""
+  afterColor: "blue"
+
+chatMessage:
+  preColor: "blue"
+  preText: " %player%"
+  preColor2: "white"
+  preText2: " írt egy keresési linket."
+  clickColor: "blue"
+  clickText: " [menj a linkre]"
+  hoverColor: "gold"
+  hoverText: "Kattints a link megnyitásához"
+  afterText: ""
+  afterColor: "blue"

@@ -31,23 +31,21 @@ public class Language {
     public String PLAIN_PREFIX = ChatColor.stripColor(PREFIX);
     public String PLAIN_NAME = ChatColor.stripColor(NAME);
     public String DEFAULT_NAME, DEFAULT_PLAIN_NAME;
-
-
-
-    // player input
+    
     public String CMD_MESSAGE_PRE_TEXT, CMD_MESSAGE_PRE_COLOR, CMD_MESSAGE_CLICK_TEXT
             , CMD_MESSAGE_CLICK_COLOR, CMD_MESSAGE_HOVER_TEXT, CMD_MESSAGE_HOVER_COLOR
             , CMD_MESSAGE_AFTER_TEXT, CMD_MESSAGE_AFTER_COLOR, CMD_MESSAGE_CLICK_TEXT_2
             , CMD_MESSAGE_CLICK_COLOR_2, CMD_MESSAGE_HOVER_TEXT_2, CMD_MESSAGE_HOVER_COLOR_2;
 
-    // JSON prefix parts (click invite message)
     public String JSON_PREFIX_PRE_TEXT, JSON_PREFIX_PRE_COLOR, JSON_PREFIX_TEXT, JSON_PREFIX_COLOR
             , JSON_PREFIX_AFTER_TEXT, JSON_PREFIX_AFTER_COLOR;
 
-    // link message
-    public String CHAT_MESSAGE, CMD_SHORTENED_SUCCESS, CMD_SHORTENED_FAILED, CMD_SUCCESS;
+    public String CMD_SHORTENED_SUCCESS, CMD_SHORTENED_FAILED, CMD_SUCCESS;
+    public String CMD_MISSING_QUERY, CMD_NO_PERM, CMD_COOL_DOWN;
 
-    public String CMD_MISSING_QUERY, CMD_NO_PERM;
+    public String JSON_CHAT_MESSAGE_PRE_COLOR, JSON_CHAT_MESSAGE_PRE_TEXT, JSON_CHAT_MESSAGE_PRE_COLOR_2, JSON_CHAT_MESSAGE_PRE_TEXT_2
+            , JSON_CHAT_MESSAGE_CLICK_COLOR, JSON_CHAT_MESSAGE_CLICK_TEXT, JSON_CHAT_MESSAGE_HOVER_COLOR, JSON_CHAT_MESSAGE_HOVER_TEXT
+            , JSON_CHAT_MESSAGE_AFTER_COLOR, JSON_CHAT_MESSAGE_AFTER_TEXT;
 
 
     Language(Main plugin){
@@ -79,8 +77,7 @@ public class Language {
         this.JSON_PREFIX_AFTER_TEXT = getString("jsonPrefix.afterText");
         this.JSON_PREFIX_AFTER_COLOR = getString("jsonPrefix.afterColor");
         getLinkMessage();
-
-        CHAT_MESSAGE = getString("chatMessage");
+        getChatMessage();
 
         CMD_MISSING_QUERY = getString("command.missingQuery");
         CMD_NO_PERM = getString("command.noPermission");
@@ -88,6 +85,20 @@ public class Language {
         CMD_SHORTENED_SUCCESS = getString("command.shortenedSuccess");
         CMD_SHORTENED_FAILED = getString("command.shortenedFail");
         CMD_SUCCESS = getString("command.linkSuccess");
+        CMD_COOL_DOWN = getString("command.cooldown");
+    }
+
+    private void getChatMessage() {
+        this.JSON_CHAT_MESSAGE_PRE_COLOR = getString("chatMessage.preColor");
+        this.JSON_CHAT_MESSAGE_PRE_TEXT = getString("chatMessage.preText");
+        this.JSON_CHAT_MESSAGE_PRE_COLOR_2 = getString("chatMessage.preColor2");
+        this.JSON_CHAT_MESSAGE_PRE_TEXT_2 = getString("chatMessage.preText2");
+        this.JSON_CHAT_MESSAGE_CLICK_COLOR = getString("chatMessage.clickColor");
+        this.JSON_CHAT_MESSAGE_CLICK_TEXT = getString("chatMessage.clickText");
+        this.JSON_CHAT_MESSAGE_HOVER_COLOR = getString("chatMessage.hoverColor");
+        this.JSON_CHAT_MESSAGE_HOVER_TEXT = getString("chatMessage.hoverText");
+        this.JSON_CHAT_MESSAGE_AFTER_COLOR = getString("chatMessage.afterColor");
+        this.JSON_CHAT_MESSAGE_AFTER_TEXT = getString("chatMessage.afterText");
     }
 
     private void getLinkMessage() {

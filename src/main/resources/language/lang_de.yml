@@ -23,22 +23,22 @@ command:
   shortenedSuccess: " Dein Link wurde erfolgreich erstellt und verkürzt."
   shortenedFail: " Dein Link wurde erstellt, konnte aber nicht verkürzt werden."
   linkSuccess: " Dein Link wurde erstellt."
+  # Cool down formats: %minutes%, %seconds%, %mm:ss%
+  cooldown: " Du kannst das erst wieder in %mm:ss%."
 
+
+# this message is sent in the JSON format
+
+# The message contains 4 parts and gets send to the player that previously ran one of the plugins commands
+#   1. normal message before the clickable and hover-able parts (called pre...)
+#   2. clickable part with hover action (called click... / hover...)
+#   3. second clickable part with hover action (called click...2 / hover...2)
+#   4. normal message after the clickable part (called after...)
+
+# colors have to be named! valid colors:
+#   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
+#   green, aqua, red, light_purple, yellow, dark_gray, blue,
 linkMessage:
-  # this message is sent in the JSON format
-
-  # The message contains 4 parts and gets send to the player that previously ran one of the plugins commands
-  #   1. normal message before the clickable and hover-able parts (called pre...)
-  #   2. clickable part with hover action (called click... / hover...)
-  #   3. second clickable part with hover action (called click...2 / hover...2)
-  #   4. normal message after the clickable part (called after...)
-
-  # colors have to be named! valid colors:
-  #   black, white, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray
-  #   green, aqua, red, light_purple, yellow, dark_gray, blue,
-
-  # %link% will be replaced with the (possibly shortened) link. If not shortened, the link can be pretty long depending
-  # on the query.
   preText: " %link% "
   preColor: "white"
   clickText: " (send in chat)"
@@ -52,5 +52,14 @@ linkMessage:
   afterText: ""
   afterColor: "blue"
 
-# %link% will be replaced by the (shortened) link
-chatMessage: "&1Hier klicken: &r%link%"
+chatMessage:
+  preColor: "blue"
+  preText: " %player%"
+  preColor2: "white"
+  preText2: " hat einen Link erstellt."
+  clickColor: "blue"
+  clickText: " [Link öffnen]"
+  hoverColor: "gold"
+  hoverText: "Klicke um den Link zu öffnen"
+  afterText: ""
+  afterColor: "blue"

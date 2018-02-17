@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -16,19 +18,18 @@ import java.util.UUID;
  * @author Niklas Eicker
  */
 public class LmgtfyCommand implements CommandExecutor {
-
     private Language lang;
     private final String clickCommand = UUID.randomUUID().toString();
     private ShorteningService shorteningService;
-
     private SearchEngine searchEngine;
-
     private boolean lmgtfy;
+    private Map<UUID, Long> cooldowns = new HashMap<>();
+    private Main plugin;
 
     LmgtfyCommand(Main plugin, SearchEngine searchEngine, boolean lmgtfy){
-        this.lang = plugin.getLang();
+        this.plugin = plugin;
         this.searchEngine = searchEngine;
-        this.shorteningService = plugin.getShorteningService();
+        reloadCommand();
 
         this.lmgtfy = lmgtfy;
     }
@@ -54,7 +55,9 @@ public class LmgtfyCommand implements CommandExecutor {
                 // cannot happen
                 return true;
             }
-            ((Player) sender).chat(lang.CHAT_MESSAGE.replace("%link%", args[1]));
+            if(Main.cooldown > 0 && !handleCoolDown(sender)) return true;
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender()
+                        , "tellraw @a" + " " + createJSONChatMessage(args[1], sender.getName()));
             return true;
         }
         String query = String.join(" ", args);
@@ -72,6 +75,48 @@ public class LmgtfyCommand implements CommandExecutor {
         }
         handlePlayerRequest(sender, url, cmd.getName());
         return true;
+    }
+
+    void reloadCommand() {
+        this.lang = plugin.getLang();
+        this.shorteningService = plugin.getShorteningService();
+        if(lmgtfy) searchEngine = plugin.getLmgtfyMode();
+    }
+
+    private boolean handleCoolDown(CommandSender sender) {
+        Player player = (Player) sender;
+        Long lastUsed;
+        if((lastUsed = cooldowns.get(player.getUniqueId())) != null){
+            long currentMillis = System.currentTimeMillis();
+            if(currentMillis < lastUsed + Main.cooldown * 1000 && !player.hasPermission("lmgtfy.bypass")){
+                long secondsTotal = ((lastUsed + Main.cooldown * 1000) - currentMillis)/1000;
+                long minutes = secondsTotal / 60;
+                long seconds = secondsTotal % 60;
+                sender.sendMessage(lang.PREFIX + lang.CMD_COOL_DOWN
+                        .replace("%minutes%", String.valueOf(minutes))
+                        .replace("%seconds%", String.valueOf(seconds))
+                        .replace("%mm:ss%", ((minutes > 9?String.valueOf(minutes):"0" + minutes) + ":" + (seconds > 9?String.valueOf(seconds):"0" + seconds))));
+                return false;
+            }
+        }
+        cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+        return true;
+    }
+
+    private String createJSONChatMessage(String url, String name) {
+        return  "[{\"text\":\"" + lang.JSON_PREFIX_PRE_TEXT.replace("%link%", url) + "\",\"color\":\""
+                + lang.JSON_PREFIX_PRE_COLOR + "\"},{\"text\":\"" + lang.JSON_PREFIX_TEXT + "\",\"color\":\""
+                + lang.JSON_PREFIX_COLOR + "\"},{\"text\":\"" + lang.JSON_PREFIX_AFTER_TEXT + "\",\"color\":\""
+                + lang.JSON_PREFIX_AFTER_COLOR + "\"}" + ",{\"text\":\"" + lang.JSON_CHAT_MESSAGE_PRE_TEXT.replace("%player%", name) + "\",\"color\":\""
+                + lang.JSON_CHAT_MESSAGE_PRE_COLOR + "\"},"
+                + "{\"text\":\"" + lang.JSON_CHAT_MESSAGE_PRE_TEXT_2.replace("%player%", name) + "\",\"color\":\""
+                + lang.JSON_CHAT_MESSAGE_PRE_COLOR_2 + "\"},"
+                +"{\"text\":\"" + lang.JSON_CHAT_MESSAGE_CLICK_TEXT.replace("%player%", name) + "\",\"color\":\""
+                + lang.JSON_CHAT_MESSAGE_CLICK_COLOR + "\",\"bold\":" + true + ",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url
+                + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"" + lang.JSON_CHAT_MESSAGE_HOVER_TEXT.replace("%player%", name) + "\",\"color\":\""
+                + lang.JSON_CHAT_MESSAGE_HOVER_COLOR +"\"}}},"
+                + "{\"text\":\"" + lang.JSON_CHAT_MESSAGE_AFTER_TEXT.replace("%player%", name) + "\",\"color\":\""
+                + lang.JSON_CHAT_MESSAGE_AFTER_COLOR + "\"}]";
     }
 
     private void handleNonPlayerRequest(CommandSender sender, String url) {
@@ -137,7 +182,7 @@ public class LmgtfyCommand implements CommandExecutor {
      * Creates a JSON string that is ready to be send to a player per 'tellraw'
      *
      * @param url link to send
-     * @param name player
+     * @param cmd command
      * @return JSON string
      */
     private String createJSON(String url, String cmd){

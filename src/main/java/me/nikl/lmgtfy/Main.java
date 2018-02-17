@@ -21,7 +21,8 @@ import java.io.UnsupportedEncodingException;
 public class Main extends JavaPlugin {
 
     static boolean useShorteningService = true;
-
+    public static int cooldown = 30;
+    private LmgtfyCommand lmgtfyCommand;
     private Language lang;
     private FileConfiguration config;
     private ShorteningService shorteningService;
@@ -32,7 +33,6 @@ public class Main extends JavaPlugin {
     public void onEnable(){
         if (!reload()) {
             getLogger().severe(" Problem while loading the plugin! Plugin was disabled!");
-
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -45,6 +45,7 @@ public class Main extends JavaPlugin {
             getLogger().severe(" Failed to load config file!");
             return false;
         }
+        cooldown = config.getInt("chatCoolDown", 30);
         useShorteningService = config.getBoolean("useShorteningService", true);
         if(shorteningService == null) this.shorteningService = new ShorteningService(this);
         if(lang == null) this.lang = new Language(this);
@@ -52,12 +53,14 @@ public class Main extends JavaPlugin {
         lang.reload();
         shorteningService.reload();
         setLMGTFYMode();
+        if(lmgtfyCommand != null) lmgtfyCommand.reloadCommand();
         return true;
     }
 
     private void setUpCommands() {
+        lmgtfyCommand = new LmgtfyCommand(this, lmgtfyMode, true);
         this.getCommand("lmgtfyreload").setExecutor(new ReloadCommand(this));
-        this.getCommand("lmgtfy").setExecutor(new LmgtfyCommand(this, lmgtfyMode, true));
+        this.getCommand("lmgtfy").setExecutor(lmgtfyCommand);
         for(SearchEngine mode : SearchEngine.values()) {
             this.getCommand(mode.getCommand()).setExecutor(new LmgtfyCommand(this, mode));
         }
@@ -126,5 +129,9 @@ public class Main extends JavaPlugin {
 
     ShorteningService getShorteningService() {
         return shorteningService;
+    }
+
+    public SearchEngine getLmgtfyMode() {
+        return lmgtfyMode;
     }
 }

@@ -1,5 +1,9 @@
-# LMGTFY by Nikl
-
+# --------------------------------------------------------------------------------------#
+#                                                                                       #
+#                                     LMGTFY config                                     #
+#                                                                                       #
+# --------------------------------------------------------------------------------------#
+# Made by Nikl (https://www.spigotmc.org/resources/authors/205362/)
 
 
 # Options:
@@ -23,15 +27,11 @@ useShorteningService: true
 
 # An example list of shortening services
 # It works with others, too. So if you know a different service, just try it out.
-#  - International http://chilp.it/api.php?url=
+# Note: The service should have TLS active (https, not only http)
+#   minecraft does not open http links anymore in click events
+#  - International https://chilp.it/api.php?url=
 #  - International https://is.gd/api.php?longurl=
-#  - International https://v.gd/create.php?format=simple&url=
-#  - Chinese http://suo.im/api.php?url=
-#  - Chinese http://api.ft12.com/api.php?url=
-#  - Chinese http://api.kks.me/api.php?url=
-#  - Chinese http://api.u6.gg/api.php?url=
-#  - Chinese http://api.rrd.me/api.php?url=
-#  - Chinese http://api.uee.me/api.php?url=
+#  - International https://v.gd/create.php?format=simple&url= (not recommended)
 shortener: "https://is.gd/api.php?longurl="
 
 # lmgtfy mode
@@ -39,7 +39,13 @@ shortener: "https://is.gd/api.php?longurl="
 #    For an up to date list, please refer to the plugins page on Spigot
 lmgtfyMode: google
 
+# This cooldown does not restrict the creation of the links.
+#    It only restricts sending of the link in the chat. (bypass permission 'lmgtfy.bypass')
+# To disable cool down simply set it to 0
+chatCoolDown: 30
+
 # toggle bStats
 #    see: https://bstats.org/plugin/bukkit/LMGTFY
+# bStats does not put any stress on your server/network and only sends anonymous data.
 # please let me have my statistics :P
 bStats: true

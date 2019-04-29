@@ -18,7 +18,7 @@ To skip lmgtfy.com and go to the search results directly there is a command for 
 * /bing
 * /yahoo
 * /duckduckgo
-  * /ddk
+  * /ddg
 * /yandex
 * /baidu
 
